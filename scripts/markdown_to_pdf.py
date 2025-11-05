@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import re
 from pathlib import Path
 
@@ -95,6 +96,8 @@ class MarkdownPDF(FPDF):
         self.body_color = (0, 0, 0)
         self.accent_color = (0, 222, 142)
         self.set_text_color(*self.body_color)
+        # Flags
+        self.cover_added: bool = False
         # Add the first page after basic setup so header/footer use configured styles
         self.add_page()
 
@@ -135,6 +138,35 @@ class MarkdownPDF(FPDF):
         self.line(self.l_margin, self.get_y(), self.w - self.r_margin, self.get_y())
         self.ln(3)
 
+    def add_cover_page(self, title: str) -> None:
+        # Centered hero title with accent underline and generated date
+        self.doc_title = title.strip()
+        try:
+            self.set_title(self._prepare_text(self.doc_title))
+        except Exception:
+            pass
+        self.set_y(self.h * 0.35)
+        # Title
+        font = (self.body_font[0], "", 26)
+        self.set_font(*font)
+        self.set_text_color(*self.accent_color)
+        prepared = self._prepare_text(self.doc_title)
+        self.cell(0, 14, prepared, align="C", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+        # Accent underline
+        y = self.get_y()
+        self.set_draw_color(*self.accent_color)
+        self.set_line_width(1.2)
+        self.line(self.l_margin, y, self.w - self.r_margin, y)
+        # Date line
+        self.ln(8)
+        self.set_font(self.body_font[0], "", 11)
+        self.set_text_color(*self.body_color)
+        today = datetime.now().strftime("%b %d, %Y")
+        self.cell(0, 8, f"Generated on {today}", align="C")
+        # Start content on a new page
+        self.cover_added = True
+        self.add_page()
+
     def _draw_table_outline(self, y_top: float, y_bottom: float) -> None:
         # Draw a subtle accent outline around the table area
         if y_bottom <= y_top:
@@ -149,13 +181,10 @@ class MarkdownPDF(FPDF):
         self.set_draw_color(*self.body_color)
 
     def write_heading(self, text: str, level: int) -> None:
-        # Capture document title from first H1
-        if level == 1 and not self.doc_title:
-            self.doc_title = text.strip()
-            try:
-                self.set_title(self._prepare_text(self.doc_title))
-            except Exception:
-                pass
+        # Use first H1 to generate a modern cover page
+        if level == 1 and not self.cover_added:
+            self.add_cover_page(text)
+            return
 
         font = self.heading_fonts.get(level, self.heading_fonts[4])
         self.set_font(*font)
@@ -200,14 +229,19 @@ class MarkdownPDF(FPDF):
         self.ln(0.5)
 
     def write_code_block(self, lines: list[str]) -> None:
-        # Draw a simple boxed code block
+        # Draw a simple boxed code block (with page-break safety)
         self.set_font(*self.code_font)
         self.set_text_color(*self.body_color)
         usable_width = self.w - self.l_margin - self.r_margin
         line_h = 5
         padding_v = 2
         box_h = len(lines) * line_h + padding_v * 2
-        x0, y0 = self.get_x(), self.get_y()
+        x0, y0 = self.l_margin, self.get_y()
+        # Page-break safety: move to next page if needed
+        max_y = self.h - self.b_margin
+        if y0 + box_h > max_y:
+            self.add_page()
+            x0, y0 = self.l_margin, self.get_y()
         # Border in black, no fill (white background)
         self.set_draw_color(*self.body_color)
         self.set_line_width(0.2)

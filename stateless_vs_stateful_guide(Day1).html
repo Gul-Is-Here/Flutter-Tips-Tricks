@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flutter Interview Tip Day 1 — Stateless vs Stateful Widgets</title>
+  <style>
+    body { font-family: 'Arial', sans-serif; line-height: 1.6; margin: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    h1 { color: #4a90e2; text-align: center; font-size: 2.5em; margin-bottom: 30px; border-bottom: 3px solid #4a90e2; padding-bottom: 15px; }
+    h2 { color: #e74c3c; font-size: 1.8em; margin-top: 30px; border-left: 5px solid #e74c3c; padding-left: 15px; }
+    h3 { color: #27ae60; font-size: 1.4em; margin-top: 20px; }
+    .code-block { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin: 15px 0; font-family: 'Courier New', monospace; overflow-x: auto; }
+    .visual-box { background: #f0f8ff; border: 2px dashed #4a90e2; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center; font-family: monospace; font-size: 1.05em; }
+    .highlight-box { background: linear-gradient(135deg, #ffeaa7, #fab1a0); border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #e17055; }
+    .rule-box { background: linear-gradient(135deg, #d1f2eb, #a8e6cf); border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #27ae60; }
+    .warning-box { background: linear-gradient(135deg, #ffe6e6, #ffd6d6); border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #e74c3c; }
+    ul { list-style: none; padding-left: 0; }
+    li { padding: 8px 0; padding-left: 30px; position: relative; }
+    li:before { content: "✅"; position: absolute; left: 0; top: 8px; }
+    .dont li:before { content: "⚠️"; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .comparison-table th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 15px; text-align: left; font-weight: bold; }
+    .comparison-table td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+    .comparison-table tr:nth-child(even) { background: #f8f9fa; }
+    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; color: #666; font-style: italic; }
+    @media print { body { background: #fff; } .container { box-shadow: none; margin: 0; padding: 20px; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Flutter Interview Tip — Day 1: Stateless vs Stateful Widgets</h1>
+
+    <div class="highlight-box">
+      <h2>Learn it like you're 5</h2>
+      <p>Imagine two kinds of toys:</p>
+      <ul>
+        <li><strong>Stateless toy</strong>: It's a fixed action figure. It always looks the same every time you see it.</li>
+        <li><strong>Stateful toy</strong>: It's a robot with buttons. Press a button and it changes what it does.</li>
+      </ul>
+      <p>In Flutter, <strong>StatelessWidget</strong> never changes by itself after it's built, while <strong>StatefulWidget</strong> can update when its state changes.</p>
+    </div>
+
+    <h2>What is a StatelessWidget?</h2>
+    <p>A widget that <em>does not hold mutable state</em>. It can rebuild if its <strong>parent</strong> tells it to (by giving new inputs), but it can't trigger its own UI changes.</p>
+
+    <h3>Simple example</h3>
+    <div class="code-block"><pre>
+class Greeting extends StatelessWidget {
+  final String name;
+  const Greeting({super.key, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Hello, $name');
+  }
+}
+    </pre></div>
+
+    <div class="visual-box"><pre>
+Stateless
+┌─────────────────────────────┐
+│ Inputs: name = 'Alex'       │
+│ Build → UI: "Hello, Alex"   │
+│ No internal changes         │
+└─────────────────────────────┘
+    </pre></div>
+
+    <h2>What is a StatefulWidget?</h2>
+    <p>A widget that <em>owns mutable state</em> in a separate <code>State</code> object. When state changes, call <code>setState</code> to rebuild the UI.</p>
+
+    <h3>Counter example</h3>
+    <div class="code-block"><pre>
+class CounterButton extends StatefulWidget {
+  const CounterButton({super.key});
+  @override
+  State<CounterButton> createState() => _CounterButtonState();
+}
+
+class _CounterButtonState extends State<CounterButton> {
+  int _count = 0;
+
+  void _increment() => setState(() => _count++);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: _increment,
+      child: Text('Count: $_count'),
+    );
+  }
+}
+    </pre></div>
+
+    <div class="visual-box"><pre>
+Stateful
+┌─────────────────────────────┐
+│ Internal state: _count=0    │
+│ Press → setState → rebuild  │
+│ UI updates to Count: N      │
+└─────────────────────────────┘
+    </pre></div>
+
+    <h2>When to use each?</h2>
+    <div class="rule-box">
+      <h3>Use Stateless when…</h3>
+      <ul>
+        <li>UI only depends on inputs (props) and themes.</li>
+        <li>The widget displays static text, icons, or layout.</li>
+        <li>You can rebuild it via parent updates.</li>
+      </ul>
+    </div>
+    <div class="rule-box">
+      <h3>Use Stateful when…</h3>
+      <ul>
+        <li>You need to change UI based on user interaction or time.</li>
+        <li>You manage ephemeral UI state (e.g., checkbox checked, tab index).</li>
+        <li>You fetch data and display loading/results.</li>
+      </ul>
+    </div>
+
+    <h2>Common pitfalls</h2>
+    <div class="warning-box">
+      <ul class="dont">
+        <li>Updating variables in a Stateful widget <em>without</em> calling <code>setState</code> — UI won't refresh.</li>
+        <li>Keeping state in Stateless widgets (it will reset on rebuilds).</li>
+        <li>Doing heavy work inside <code>build</code>; use <code>initState</code>, <code>didChangeDependencies</code>, or caching.</li>
+        <li>Forgetting <code>const</code> constructors for stateless, stable subtrees (helps performance).</li>
+      </ul>
+    </div>
+
+    <h2>Quick summary</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Aspect</th>
+          <th>StatelessWidget</th>
+          <th>StatefulWidget</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Holds mutable state?</td>
+          <td>No</td>
+          <td>Yes (in State)</td>
+        </tr>
+        <tr>
+          <td>Who triggers rebuild?</td>
+          <td>Parent or external changes</td>
+          <td>Own <code>setState</code> or external</td>
+        </tr>
+        <tr>
+          <td>Lifecycle complexity</td>
+          <td>Simple</td>
+          <td>Has <code>initState</code>, <code>dispose</code>, etc.</td>
+        </tr>
+        <tr>
+          <td>Typical use</td>
+          <td>Static UI, pure views</td>
+          <td>Interactive UI, ephemeral state</td>
+        </tr>
+        <tr>
+          <td>Performance tip</td>
+          <td>Use <code>const</code> constructors</td>
+          <td>Minimize setState area; lift state up when needed</td>
+        </tr>
+        <tr>
+          <td>Example</td>
+          <td><code>Text</code>, <code>Icon</code>, <code>SizedBox</code></td>
+          <td><code>Checkbox</code>, <code>TextField</code>, custom counters</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <p><em>Flutter Interview Tip — Day 1</em> • Keep building! 🚀</p>
+    </div>
+  </div>
+</body>
+</html>
