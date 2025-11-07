@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flutter Interview Tip Day 5 — MainAxisAlignment vs CrossAxisAlignment</title>
+  <style>
+    body { font-family: 'Arial', sans-serif; line-height: 1.6; margin: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    h1 { color: #4a90e2; text-align: center; font-size: 2.5em; margin-bottom: 30px; border-bottom: 3px solid #4a90e2; padding-bottom: 15px; }
+    h2 { color: #e74c3c; font-size: 1.8em; margin-top: 30px; border-left: 5px solid #e74c3c; padding-left: 15px; }
+    h3 { color: #27ae60; font-size: 1.4em; margin-top: 20px; }
+    .highlight-box { background: linear-gradient(135deg, #ffeaa7, #fab1a0); border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #e17055; }
+    .rule-box { background: linear-gradient(135deg, #d1f2eb, #a8e6cf); border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #27ae60; }
+    .info-box { background: linear-gradient(135deg, #a8edea, #fed6e3); border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 5px solid #fd79a8; }
+    .visual-box { background: #f0f8ff; border: 2px dashed #4a90e2; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center; font-family: monospace; font-size: 1.05em; }
+    ul { list-style: none; padding-left: 0; }
+    li { padding: 8px 0; padding-left: 30px; position: relative; }
+    li:before { content: "🎯"; position: absolute; left: 0; top: 8px; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .comparison-table th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 15px; text-align: left; font-weight: bold; }
+    .comparison-table td { padding: 12px 15px; border-bottom: 1px solid #eee; }
+    .comparison-table tr:nth-child(even) { background: #f8f9fa; }
+    .code-example { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; margin: 15px 0; font-family: 'Courier New', monospace; overflow-x: auto; }
+    .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; color: #666; font-style: italic; }
+    @media print { body { background: #fff; } .container { box-shadow: none; margin: 0; padding: 20px; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Flutter Interview Tip — Day 5: 🧩 MainAxisAlignment vs CrossAxisAlignment</h1>
+
+    <div class="highlight-box">
+      <h2>Learn it like you're 5</h2>
+      <p>Imagine you're arranging your toys 🧸 in a row or a column. You can decide <strong>how they stand next to each other</strong> (left, center, right) and <strong>how they stand top-to-bottom</strong> (up, middle, down).</p>
+      <p>That's exactly what <code>MainAxisAlignment</code> and <code>CrossAxisAlignment</code> do in Flutter!</p>
+    </div>
+
+    <h2>🛣️ MainAxisAlignment → The Main Road</h2>
+    <p>It controls <strong>how widgets are positioned along the main axis</strong> — that means the <strong>direction</strong> your Row or Column is going.</p>
+
+    <div class="rule-box">
+      <h3>Think of it like this:</h3>
+      <ul>
+        <li>If you have a <strong>Row</strong>, the main road goes <strong>left to right</strong> ↔️</li>
+        <li>If you have a <strong>Column</strong>, the main road goes <strong>top to bottom</strong> ↕️</li>
+      </ul>
+      <p><strong>MainAxisAlignment decides where your widgets stand on that road.</strong></p>
+    </div>
+
+    <div class="visual-box"><pre>
+Row (Main Axis = Horizontal ↔️)
+┌─────────────────────────────┐
+│  [🧸]    [🧸]    [🧸]       │ ← MainAxisAlignment
+└─────────────────────────────┘
+
+Column (Main Axis = Vertical ↕️)
+┌──────┐
+│ [🧸] │
+│ [🧸] │ ← MainAxisAlignment
+│ [🧸] │
+└──────┘
+    </pre></div>
+
+    <h2>🧭 CrossAxisAlignment → The Cross Road</h2>
+    <p>It controls <strong>how widgets line up on the opposite side</strong> — the <strong>cross direction</strong> (the other road).</p>
+
+    <div class="rule-box">
+      <h3>Think of it like this:</h3>
+      <ul>
+        <li>If your Row goes left to right → the cross direction goes up and down ↕️</li>
+        <li>If your Column goes up and down → the cross direction goes left and right ↔️</li>
+      </ul>
+      <p><strong>CrossAxisAlignment decides how widgets are placed across the road.</strong></p>
+    </div>
+
+    <div class="visual-box"><pre>
+Row (Cross Axis = Vertical ↕️)
+        ↑
+┌───────┼─────────┐
+│  [🧸] │  [🧸]   │ ← CrossAxisAlignment
+└───────┼─────────┘
+        ↓
+
+Column (Cross Axis = Horizontal ↔️)
+    ← [🧸] → 
+    ← [🧸] →  ← CrossAxisAlignment
+    ← [🧸] →
+    </pre></div>
+
+    <h2>🧸 Simple Shelf Example</h2>
+    <div class="info-box">
+      <p>If you're putting teddy bears 🧸 in a row on a shelf:</p>
+      <ul>
+        <li><strong>MainAxisAlignment</strong> decides if they stand <strong>at the start, middle, or end</strong> of the shelf.</li>
+        <li><strong>CrossAxisAlignment</strong> decides if they stand <strong>on the floor, in the middle, or on a higher rack.</strong></li>
+      </ul>
+    </div>
+
+    <h2>🌈 In Easy Words</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Concept</th>
+          <th>What It Controls</th>
+          <th>Direction</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>MainAxisAlignment</strong></td>
+          <td>Position along main direction</td>
+          <td>Row → Left ↔️ Right<br>Column → Top ↕️ Bottom</td>
+          <td>"Stand in a line!"</td>
+        </tr>
+        <tr>
+          <td><strong>CrossAxisAlignment</strong></td>
+          <td>Position across the direction</td>
+          <td>Row → Up ↕️ Down<br>Column → Left ↔️ Right</td>
+          <td>"Stay on this height!"</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>💬 Quick Real-Life Example</h2>
+    <div class="info-box">
+      <p>If you're sitting with your friends for a photo 📸:</p>
+      <ul>
+        <li><strong>MainAxisAlignment:</strong> Whether everyone sits left, center, or right on the bench.</li>
+        <li><strong>CrossAxisAlignment:</strong> Whether everyone sits on the same height or leans differently.</li>
+      </ul>
+    </div>
+
+    <h2>🎨 Common Values</h2>
+    <div class="rule-box">
+      <h3>MainAxisAlignment Values:</h3>
+      <ul>
+        <li><code>start</code> — At the beginning</li>
+        <li><code>center</code> — In the middle</li>
+        <li><code>end</code> — At the end</li>
+        <li><code>spaceAround</code> — Equal space around each widget</li>
+        <li><code>spaceBetween</code> — Space only between widgets</li>
+        <li><code>spaceEvenly</code> — Equal space everywhere</li>
+      </ul>
+      
+      <h3>CrossAxisAlignment Values:</h3>
+      <ul>
+        <li><code>start</code> — Align to start of cross axis</li>
+        <li><code>center</code> — Center on cross axis</li>
+        <li><code>end</code> — Align to end of cross axis</li>
+        <li><code>stretch</code> — Fill the cross axis</li>
+        <li><code>baseline</code> — Align text baselines (Row only)</li>
+      </ul>
+    </div>
+
+    <h2>📝 Code Example</h2>
+    <div class="code-example"><pre>
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,  // Horizontal center
+  crossAxisAlignment: CrossAxisAlignment.start, // Top alignment
+  children: [
+    Icon(Icons.star),
+    Text('Flutter'),
+    Icon(Icons.favorite),
+  ],
+)
+
+Column(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Vertical spacing
+  crossAxisAlignment: CrossAxisAlignment.stretch,   // Full width
+  children: [
+    Text('Day 1'),
+    Text('Day 2'),
+    Text('Day 3'),
+  ],
+)
+    </pre></div>
+
+    <h2>🧠 Quick Recap</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Easy Meaning</th>
+          <th>Think Like a 5-Year-Old</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>MainAxisAlignment</strong></td>
+          <td>Positions widgets along the main line (Row or Column)</td>
+          <td>Where the toys stand on the shelf</td>
+        </tr>
+        <tr>
+          <td><strong>CrossAxisAlignment</strong></td>
+          <td>Positions widgets across that line</td>
+          <td>How tall or high they stand</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>💡 Remember</h2>
+    <div class="highlight-box">
+      <ul>
+        <li>In a <strong>Row</strong>, main = horizontal ↔️, cross = vertical ↕️</li>
+        <li>In a <strong>Column</strong>, main = vertical ↕️, cross = horizontal ↔️</li>
+        <li>Together, they help you <strong>perfectly align your widgets</strong> like neatly organized toys! 🧱</li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      <p><em>Flutter Interview Tip — Day 5</em> • Made by Gul Faraz Ahmed for Flutter learners everywhere!</p>
+    </div>
+  </div>
+</body>
+</html>
