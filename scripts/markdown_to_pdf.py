@@ -8,7 +8,6 @@ from pathlib import Path
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
 
-
 EMOJI_REPLACEMENTS = {
     # Strip emojis completely for a clean, professional look
     "🎯": "",

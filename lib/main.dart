@@ -121,17 +121,7 @@ class _WidgetComparisonScreenState extends State<WidgetComparisonScreen> {
 }
 
 // ===============================================
-// STATELESS WIDGET EXAMPLE (LEFT HALF)
-// ===============================================
 
-/// STATELESS WIDGET - Content never changes after creation
-///
-/// Key characteristics:
-/// - Immutable (cannot change)
-/// - No setState() method
-/// - Build method called only once (or when parent rebuilds)
-/// - Perfect for static content like text, icons, images
-/// - Lightweight and efficient
 
 // Static variable to track build calls (for demonstration only)
 int _statelessBuildCount = 0;
