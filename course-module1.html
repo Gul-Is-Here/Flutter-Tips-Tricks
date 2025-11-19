@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter Interview Course - Module 1: Flutter Fundamentals</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .course-header {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .course-header h1 {
+            color: white;
+            font-size: 3em;
+            margin: 0 0 10px 0;
+            border: none;
+        }
+        
+        .course-header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin: 10px 0;
+        }
+        
+        .module-badge {
+            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: bold;
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+        
+        .lesson-divider {
+            background: linear-gradient(135deg, #00c9ff, #92fe9d);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 40px 0 30px 0;
+            text-align: center;
+        }
+        
+        .lesson-divider h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0;
+            font-size: 2em;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-top: 30px;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #e74c3c;
+            font-size: 1.6em;
+            margin-top: 25px;
+        }
+        
+        h4 {
+            color: #27ae60;
+            font-size: 1.3em;
+            margin-top: 20px;
+        }
+        
+        .factory-box {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #ff9800;
+        }
+        
+        .lego-box {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #2196f3;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            font-size: 0.95em;
+        }
+        
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+        
+        .code-block .class {
+            color: #8be9fd;
+        }
+        
+        .code-block .function {
+            color: #50fa7b;
+        }
+        
+        .code-block .string {
+            color: #f1fa8c;
+        }
+        
+        .code-block .comment {
+            color: #6272a4;
+            font-style: italic;
+        }
+        
+        .code-block .number {
+            color: #bd93f9;
+        }
+        
+        .important-box {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .tip-box {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #4caf50;
+        }
+        
+        .analogy-box {
+            background: linear-gradient(135deg, #fff9c4, #fff59d);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #fbc02d;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .key-points {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .key-points li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+        }
+        
+        .key-points li:before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            font-size: 1.2em;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            gap: 20px;
+        }
+        
+        .nav-button {
+            flex: 1;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+            color: #666;
+            font-style: italic;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                margin: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="course-header">
+            <h1>🚀 Flutter Interview Course</h1>
+            <p>Complete Guide from Basics to Advanced</p>
+            <div class="module-badge">MODULE 1: Flutter Fundamentals</div>
+        </div>
+
+        <!-- ==================== LESSON 1: INTRODUCTION TO FLUTTER ==================== -->
+        
+        <div class="lesson-divider">
+            <h2>📱 Lesson 1: Introduction to Flutter</h2>
+        </div>
+        
+        <h2>🏭 What is Flutter?</h2>
+        
+        <div class="factory-box">
+            <h3>🎯 Real-Life Analogy: The Toy Factory</h3>
+            <p><strong>Imagine Flutter as a magical toy factory! 🏭</strong></p>
+            <p>In a regular factory, you need different machines to make toys for different countries:</p>
+            <ul style="margin-left: 30px;">
+                <li>🇺🇸 One machine for American toys</li>
+                <li>🇯🇵 Another machine for Japanese toys</li>
+                <li>🇩🇪 Yet another for German toys</li>
+            </ul>
+            <p><strong>But Flutter is a SUPER factory!</strong> You build the toy ONCE, and it works everywhere! 🎉</p>
+            <p>One factory = Apps for Android, iOS, Web, Windows, Mac, and Linux!</p>
+        </div>
+
+        <h3>✨ What Makes Flutter Special?</h3>
+        
+        <div class="key-points">
+            <ul>
+                <li><strong>Cross-Platform</strong> - Write code once, run everywhere (Android, iOS, Web, Desktop)</li>
+                <li><strong>Fast Development</strong> - Hot Reload lets you see changes instantly!</li>
+                <li><strong>Beautiful UI</strong> - Built-in Material Design and Cupertino widgets</li>
+                <li><strong>Native Performance</strong> - Compiles to native code for speed</li>
+                <li><strong>Single Codebase</strong> - Maintain one codebase for all platforms</li>
+            </ul>
+        </div>
+
+        <h3>🏗️ Flutter Architecture Overview</h3>
+        
+        <div class="tip-box">
+            <h4>Understanding Flutter's Layers</h4>
+            <p>Flutter has three main layers, like a cake with three layers! 🍰</p>
+            <ol style="margin-left: 30px;">
+                <li><strong>Framework Layer (Dart)</strong> - Your app code lives here</li>
+                <li><strong>Engine Layer (C++)</strong> - Does the heavy lifting (rendering, networking)</li>
+                <li><strong>Embedder Layer</strong> - Connects Flutter to the operating system</li>
+            </ol>
+        </div>
+
+        <h3>🌳 The Widget Tree</h3>
+        
+        <div class="lego-box">
+            <h4>Think of Your App as a Tree 🌳</h4>
+            <p>Every Flutter app is a tree of widgets:</p>
+            <ul style="margin-left: 30px;">
+                <li>🌳 <strong>Root</strong> - MaterialApp or CupertinoApp</li>
+                <li>🌿 <strong>Branches</strong> - Screens and containers</li>
+                <li>🍃 <strong>Leaves</strong> - Buttons, text, images</li>
+            </ul>
+        </div>
+
+        <div class="code-block">
+<span class="comment">// Simple Flutter app structure</span>
+<span class="keyword">void</span> <span class="function">main</span>() {
+  <span class="function">runApp</span>(<span class="class">MyApp</span>());
+}
+
+<span class="keyword">class</span> <span class="class">MyApp</span> <span class="keyword">extends</span> StatelessWidget {
+  <span class="keyword">@override</span>
+  Widget <span class="function">build</span>(BuildContext context) {
+    <span class="keyword">return</span> <span class="class">MaterialApp</span>(
+      title: <span class="string">'My First Flutter App'</span>,
+      home: <span class="class">Scaffold</span>(
+        appBar: <span class="class">AppBar</span>(
+          title: <span class="class">Text</span>(<span class="string">'Welcome to Flutter!'</span>),
+        ),
+        body: <span class="class">Center</span>(
+          child: <span class="class">Text</span>(
+            <span class="string">'Hello, Flutter World! 🌍'</span>,
+            style: <span class="class">TextStyle</span>(fontSize: <span class="number">24</span>),
+          ),
+        ),
+      ),
+    );
+  }
+}
+</div>
+
+        <!-- ==================== LESSON 2: FLUTTER WIDGETS ==================== -->
+        
+        <div class="lesson-divider">
+            <h2>🧱 Lesson 2: Understanding Widgets</h2>
+        </div>
+        
+        <h2>🧩 What are Widgets?</h2>
+        
+        <div class="lego-box">
+            <h3>🎨 The Lego Analogy</h3>
+            <p><strong>Widgets are like LEGO blocks! 🧱</strong></p>
+            <p>Just like you build a Lego castle by stacking different blocks:</p>
+            <ul style="margin-left: 30px;">
+                <li>🟦 Blue blocks = Buttons</li>
+                <li>🟥 Red blocks = Text</li>
+                <li>🟨 Yellow blocks = Images</li>
+                <li>🟩 Green blocks = Containers</li>
+            </ul>
+            <p><strong>You combine these blocks to build your entire app!</strong></p>
+        </div>
+
+        <h3>🔄 Stateful vs Stateless Widgets</h3>
+        
+        <div class="analogy-box">
+            <h4>Understanding the Difference</h4>
+            <p><strong>Think of it like toys:</strong></p>
+            <ul style="margin-left: 30px;">
+                <li>🗿 <strong>StatelessWidget</strong> = A stone statue (never changes)</li>
+                <li>🎮 <strong>StatefulWidget</strong> = A video game character (changes based on actions)</li>
+            </ul>
+        </div>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>StatelessWidget</th>
+                    <th>StatefulWidget</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Can Change?</strong></td>
+                    <td>❌ No</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><strong>Has State?</strong></td>
+                    <td>❌ No</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><strong>Use Case</strong></td>
+                    <td>Static content (logos, labels)</td>
+                    <td>Dynamic content (forms, counters)</td>
+                </tr>
+                <tr>
+                    <td><strong>Performance</strong></td>
+                    <td>⚡ Faster</td>
+                    <td>🐢 Slightly slower</td>
+                </tr>
+                <tr>
+                    <td><strong>Example</strong></td>
+                    <td>Text, Icon, Image</td>
+                    <td>TextField, Checkbox, Counter</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>📝 StatelessWidget Example</h4>
+        
+        <div class="code-block">
+<span class="comment">// StatelessWidget - Never changes</span>
+<span class="keyword">class</span> <span class="class">WelcomeMessage</span> <span class="keyword">extends</span> StatelessWidget {
+  <span class="keyword">final</span> String name;
+  
+  <span class="keyword">const</span> <span class="class">WelcomeMessage</span>({<span class="keyword">required</span> <span class="keyword">this</span>.name});
+  
+  <span class="keyword">@override</span>
+  Widget <span class="function">build</span>(BuildContext context) {
+    <span class="keyword">return</span> <span class="class">Text</span>(
+      <span class="string">'Welcome, $name! 👋'</span>,
+      style: <span class="class">TextStyle</span>(
+        fontSize: <span class="number">24</span>,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+}
+
+<span class="comment">// Usage</span>
+<span class="class">WelcomeMessage</span>(name: <span class="string">'Flutter Developer'</span>)
+</div>
+
+        <h4>🔄 StatefulWidget Example</h4>
+        
+        <div class="code-block">
+<span class="comment">// StatefulWidget - Can change over time</span>
+<span class="keyword">class</span> <span class="class">Counter</span> <span class="keyword">extends</span> StatefulWidget {
+  <span class="keyword">@override</span>
+  <span class="class">_CounterState</span> <span class="function">createState</span>() => <span class="class">_CounterState</span>();
+}
+
+<span class="keyword">class</span> <span class="class">_CounterState</span> <span class="keyword">extends</span> State<<span class="class">Counter</span>> {
+  <span class="keyword">int</span> _count = <span class="number">0</span>;
+  
+  <span class="keyword">void</span> <span class="function">_increment</span>() {
+    <span class="function">setState</span>(() {
+      _count++;  <span class="comment">// Update the count</span>
+    });
+  }
+  
+  <span class="keyword">@override</span>
+  Widget <span class="function">build</span>(BuildContext context) {
+    <span class="keyword">return</span> <span class="class">Column</span>(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        <span class="class">Text</span>(
+          <span class="string">'Count: $_count'</span>,
+          style: <span class="class">TextStyle</span>(fontSize: <span class="number">32</span>),
+        ),
+        <span class="class">SizedBox</span>(height: <span class="number">20</span>),
+        <span class="class">ElevatedButton</span>(
+          onPressed: _increment,
+          child: <span class="class">Text</span>(<span class="string">'Increment 🔼'</span>),
+        ),
+      ],
+    );
+  }
+}
+</div>
+
+        <h3>🎯 Creating Custom Widgets</h3>
+        
+        <div class="tip-box">
+            <h4>Why Create Custom Widgets?</h4>
+            <ul style="margin-left: 30px;">
+                <li>♻️ <strong>Reusability</strong> - Use the same widget in multiple places</li>
+                <li>🧹 <strong>Clean Code</strong> - Keep your code organized and readable</li>
+                <li>🔧 <strong>Maintainability</strong> - Easy to update in one place</li>
+                <li>🎨 <strong>Consistency</strong> - Same look and feel across your app</li>
+            </ul>
+        </div>
+
+        <div class="code-block">
+<span class="comment">// Custom reusable button widget</span>
+<span class="keyword">class</span> <span class="class">CustomButton</span> <span class="keyword">extends</span> StatelessWidget {
+  <span class="keyword">final</span> String text;
+  <span class="keyword">final</span> VoidCallback onPressed;
+  <span class="keyword">final</span> Color color;
+  
+  <span class="keyword">const</span> <span class="class">CustomButton</span>({
+    <span class="keyword">required</span> <span class="keyword">this</span>.text,
+    <span class="keyword">required</span> <span class="keyword">this</span>.onPressed,
+    <span class="keyword">this</span>.color = Colors.blue,
+  });
+  
+  <span class="keyword">@override</span>
+  Widget <span class="function">build</span>(BuildContext context) {
+    <span class="keyword">return</span> <span class="class">ElevatedButton</span>(
+      onPressed: onPressed,
+      style: <span class="class">ElevatedButton</span>.<span class="function">styleFrom</span>(
+        backgroundColor: color,
+        padding: <span class="class">EdgeInsets</span>.<span class="function">symmetric</span>(
+          horizontal: <span class="number">32</span>,
+          vertical: <span class="number">16</span>,
+        ),
+        shape: <span class="class">RoundedRectangleBorder</span>(
+          borderRadius: <span class="class">BorderRadius</span>.<span class="function">circular</span>(<span class="number">12</span>),
+        ),
+      ),
+      child: <span class="class">Text</span>(
+        text,
+        style: <span class="class">TextStyle</span>(
+          fontSize: <span class="number">18</span>,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+}
+
+<span class="comment">// Usage - Now you can use this anywhere!</span>
+<span class="class">CustomButton</span>(
+  text: <span class="string">'Click Me!'</span>,
+  onPressed: () => <span class="function">print</span>(<span class="string">'Button pressed!'</span>),
+  color: Colors.purple,
+)
+</div>
+
+        <h3>🔄 Widget Lifecycle & Rebuilding</h3>
+        
+        <div class="important-box">
+            <h4>⚠️ Important: Understanding Widget Rebuilds</h4>
+            <p>Flutter rebuilds widgets when:</p>
+            <ul style="margin-left: 30px;">
+                <li>📱 <strong>setState() is called</strong> - Most common</li>
+                <li>👪 <strong>Parent widget rebuilds</strong> - Triggers child rebuilds</li>
+                <li>🔄 <strong>InheritedWidget changes</strong> - Notifies dependents</li>
+                <li>🎯 <strong>MediaQuery changes</strong> - Screen rotation, keyboard</li>
+            </ul>
+        </div>
+
+        <!-- ==================== LESSON 3: DART BASICS ==================== -->
+        
+        <div class="lesson-divider">
+            <h2>🎯 Lesson 3: Dart Language Basics</h2>
+        </div>
+        
+        <h2>📦 What is Dart?</h2>
+        
+        <div class="analogy-box">
+            <h3>🗣️ Think of Dart as a Language</h3>
+            <p><strong>Just like you speak English or Spanish to communicate with people...</strong></p>
+            <p>You use <strong>Dart</strong> to communicate with Flutter! 🗣️</p>
+            <p>Dart is the programming language that tells Flutter what to do.</p>
+        </div>
+
+        <h3>📝 Variables and Data Types</h3>
+        
+        <div class="tip-box">
+            <h4>Variables = Labeled Boxes 📦</h4>
+            <p>Think of variables as labeled boxes where you store things:</p>
+            <ul style="margin-left: 30px;">
+                <li>📦 <strong>String box</strong> - Stores text (like names)</li>
+                <li>📦 <strong>int box</strong> - Stores whole numbers</li>
+                <li>📦 <strong>double box</strong> - Stores decimal numbers</li>
+                <li>📦 <strong>bool box</strong> - Stores true/false</li>
+            </ul>
+        </div>
+
+        <div class="code-block">
+<span class="comment">// String - Text data</span>
+String name = <span class="string">"Flutter"</span>;
+String greeting = <span class="string">'Hello, World!'</span>;
+
+<span class="comment">// int - Whole numbers</span>
+<span class="keyword">int</span> age = <span class="number">25</span>;
+<span class="keyword">int</span> score = <span class="number">100</span>;
+
+<span class="comment">// double - Decimal numbers</span>
+<span class="keyword">double</span> price = <span class="number">19.99</span>;
+<span class="keyword">double</span> temperature = <span class="number">36.5</span>;
+
+<span class="comment">// bool - True or False</span>
+<span class="keyword">bool</span> isLoggedIn = <span class="keyword">true</span>;
+<span class="keyword">bool</span> hasPermission = <span class="keyword">false</span>;
+
+<span class="comment">// var - Dart figures out the type automatically</span>
+<span class="keyword">var</span> city = <span class="string">"New York"</span>;  <span class="comment">// Dart knows it's a String</span>
+<span class="keyword">var</span> count = <span class="number">42</span>;           <span class="comment">// Dart knows it's an int</span>
+
+<span class="comment">// const - Value never changes (compile-time constant)</span>
+<span class="keyword">const</span> pi = <span class="number">3.14159</span>;
+<span class="keyword">const</span> appName = <span class="string">"My Flutter App"</span>;
+
+<span class="comment">// final - Value set once at runtime, then never changes</span>
+<span class="keyword">final</span> currentDate = DateTime.now();
+<span class="keyword">final</span> userId = <span class="function">getUserId</span>();
+</div>
+
+        <h3>📚 Dart Collections</h3>
+        
+        <h4>📋 Lists (Arrays)</h4>
+        
+        <div class="code-block">
+<span class="comment">// List - Ordered collection of items</span>
+List<String> fruits = [<span class="string">'Apple'</span>, <span class="string">'Banana'</span>, <span class="string">'Orange'</span>];
+
+<span class="comment">// Access items by index (starting from 0)</span>
+<span class="function">print</span>(fruits[<span class="number">0</span>]);  <span class="comment">// Output: Apple</span>
+
+<span class="comment">// Add items</span>
+fruits.<span class="function">add</span>(<span class="string">'Mango'</span>);
+
+<span class="comment">// Remove items</span>
+fruits.<span class="function">remove</span>(<span class="string">'Banana'</span>);
+
+<span class="comment">// Loop through list</span>
+<span class="keyword">for</span> (<span class="keyword">var</span> fruit <span class="keyword">in</span> fruits) {
+  <span class="function">print</span>(fruit);
+}
+
+<span class="comment">// List operations</span>
+<span class="function">print</span>(fruits.length);      <span class="comment">// Number of items</span>
+<span class="function">print</span>(fruits.isEmpty);    <span class="comment">// Check if empty</span>
+<span class="function">print</span>(fruits.first);      <span class="comment">// First item</span>
+<span class="function">print</span>(fruits.last);       <span class="comment">// Last item</span>
+</div>
+
+        <h4>🎯 Sets (Unique Collections)</h4>
+        
+        <div class="code-block">
+<span class="comment">// Set - Collection of unique items (no duplicates)</span>
+Set<String> colors = {<span class="string">'Red'</span>, <span class="string">'Blue'</span>, <span class="string">'Green'</span>};
+
+<span class="comment">// Adding duplicate does nothing</span>
+colors.<span class="function">add</span>(<span class="string">'Red'</span>);  <span class="comment">// Won't be added (already exists)</span>
+colors.<span class="function">add</span>(<span class="string">'Yellow'</span>);  <span class="comment">// Will be added</span>
+
+<span class="function">print</span>(colors);  <span class="comment">// Output: {Red, Blue, Green, Yellow}</span>
+</div>
+
+        <h4>🗺️ Maps (Key-Value Pairs)</h4>
+        
+        <div class="code-block">
+<span class="comment">// Map - Collection of key-value pairs</span>
+Map<String, <span class="keyword">int</span>> ages = {
+  <span class="string">'Alice'</span>: <span class="number">25</span>,
+  <span class="string">'Bob'</span>: <span class="number">30</span>,
+  <span class="string">'Charlie'</span>: <span class="number">35</span>,
+};
+
+<span class="comment">// Access values by key</span>
+<span class="function">print</span>(ages[<span class="string">'Alice'</span>]);  <span class="comment">// Output: 25</span>
+
+<span class="comment">// Add new entry</span>
+ages[<span class="string">'Diana'</span>] = <span class="number">28</span>;
+
+<span class="comment">// Update existing</span>
+ages[<span class="string">'Bob'</span>] = <span class="number">31</span>;
+
+<span class="comment">// Loop through map</span>
+ages.<span class="function">forEach</span>((name, age) {
+  <span class="function">print</span>(<span class="string">'$name is $age years old'</span>);
+});
+
+<span class="comment">// Check if key exists</span>
+<span class="keyword">if</span> (ages.<span class="function">containsKey</span>(<span class="string">'Alice'</span>)) {
+  <span class="function">print</span>(<span class="string">'Alice is in the map!'</span>);
+}
+</div>
+
+        <h3>⚡ Asynchronous Programming</h3>
+        
+        <div class="analogy-box">
+            <h3>🍕 The Pizza Delivery Analogy</h3>
+            <p><strong>Imagine you order a pizza:</strong></p>
+            <ul style="margin-left: 30px;">
+                <li>📞 You call and order (start the task)</li>
+                <li>🎮 While waiting, you play video games (do other things)</li>
+                <li>🔔 Pizza arrives (task completes)</li>
+                <li>🍕 You eat the pizza (use the result)</li>
+            </ul>
+            <p><strong>This is exactly how async/await works!</strong> You don't wait idle - you do other things!</p>
+        </div>
+
+        <h4>🔮 Futures</h4>
+        
+        <div class="code-block">
+<span class="comment">// Future - A value that will be available later</span>
+<span class="keyword">Future</span><String> <span class="function">fetchUserName</span>() <span class="keyword">async</span> {
+  <span class="comment">// Simulate network delay (like waiting for pizza)</span>
+  <span class="keyword">await</span> <span class="class">Future</span>.<span class="function">delayed</span>(<span class="class">Duration</span>(seconds: <span class="number">2</span>));
+  <span class="keyword">return</span> <span class="string">'John Doe'</span>;
+}
+
+<span class="comment">// Using async/await</span>
+<span class="keyword">void</span> <span class="function">getUserData</span>() <span class="keyword">async</span> {
+  <span class="function">print</span>(<span class="string">'Fetching user name...'</span>);
+  
+  String name = <span class="keyword">await</span> <span class="function">fetchUserName</span>();  <span class="comment">// Wait for result</span>
+  
+  <span class="function">print</span>(<span class="string">'User name: $name'</span>);
+}
+
+<span class="comment">// Real-world example: Fetching data from API</span>
+<span class="keyword">Future</span><Map<String, dynamic>> <span class="function">fetchUserProfile</span>(<span class="keyword">int</span> userId) <span class="keyword">async</span> {
+  <span class="keyword">final</span> response = <span class="keyword">await</span> http.<span class="function">get</span>(
+    Uri.<span class="function">parse</span>(<span class="string">'https://api.example.com/users/$userId'</span>),
+  );
+  
+  <span class="keyword">if</span> (response.statusCode == <span class="number">200</span>) {
+    <span class="keyword">return</span> jsonDecode(response.body);
+  } <span class="keyword">else</span> {
+    <span class="keyword">throw</span> <span class="class">Exception</span>(<span class="string">'Failed to load user'</span>);
+  }
+}
+
+<span class="comment">// Error handling with try-catch</span>
+<span class="keyword">void</span> <span class="function">loadUserData</span>() <span class="keyword">async</span> {
+  <span class="keyword">try</span> {
+    <span class="keyword">final</span> profile = <span class="keyword">await</span> <span class="function">fetchUserProfile</span>(<span class="number">123</span>);
+    <span class="function">print</span>(<span class="string">'User: ${profile['name']}'</span>);
+  } <span class="keyword">catch</span> (e) {
+    <span class="function">print</span>(<span class="string">'Error: $e'</span>);
+  }
+}
+</div>
+
+        <h4>🌊 Streams</h4>
+        
+        <div class="analogy-box">
+            <h4>Understanding Streams</h4>
+            <p><strong>Stream = A river of data! 🌊</strong></p>
+            <p>Instead of waiting for ONE thing (Future), you listen to MANY things over time:</p>
+            <ul style="margin-left: 30px;">
+                <li>📻 Radio station - continuous stream of music</li>
+                <li>💬 Chat messages - messages keep coming</li>
+                <li>📍 GPS location - updates every second</li>
+            </ul>
+        </div>
+
+        <div class="code-block">
+<span class="comment">// Creating a simple stream</span>
+<span class="keyword">Stream</span><<span class="keyword">int</span>> <span class="function">countStream</span>() <span class="keyword">async*</span> {
+  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= <span class="number">5</span>; i++) {
+    <span class="keyword">await</span> <span class="class">Future</span>.<span class="function">delayed</span>(<span class="class">Duration</span>(seconds: <span class="number">1</span>));
+    <span class="keyword">yield</span> i;  <span class="comment">// Send value to stream</span>
+  }
+}
+
+<span class="comment">// Listening to a stream</span>
+<span class="keyword">void</span> <span class="function">listenToStream</span>() <span class="keyword">async</span> {
+  <span class="keyword">await for</span> (<span class="keyword">var</span> number <span class="keyword">in</span> <span class="function">countStream</span>()) {
+    <span class="function">print</span>(<span class="string">'Received: $number'</span>);
+  }
+  <span class="function">print</span>(<span class="string">'Stream completed!'</span>);
+}
+
+<span class="comment">// Real-world: Chat messages stream</span>
+<span class="keyword">Stream</span><String> <span class="function">chatMessagesStream</span>() <span class="keyword">async*</span> {
+  <span class="keyword">final</span> messages = [
+    <span class="string">'Hello!'</span>,
+    <span class="string">'How are you?'</span>,
+    <span class="string">'What are you doing?'</span>,
+  ];
+  
+  <span class="keyword">for</span> (<span class="keyword">var</span> message <span class="keyword">in</span> messages) {
+    <span class="keyword">await</span> <span class="class">Future</span>.<span class="function">delayed</span>(<span class="class">Duration</span>(seconds: <span class="number">2</span>));
+    <span class="keyword">yield</span> message;
+  }
+}
+
+<span class="comment">// Using StreamBuilder in Flutter</span>
+<span class="class">StreamBuilder</span><String>(
+  stream: <span class="function">chatMessagesStream</span>(),
+  builder: (context, snapshot) {
+    <span class="keyword">if</span> (snapshot.hasData) {
+      <span class="keyword">return</span> <span class="class">Text</span>(snapshot.data!);
+    } <span class="keyword">else</span> <span class="keyword">if</span> (snapshot.hasError) {
+      <span class="keyword">return</span> <span class="class">Text</span>(<span class="string">'Error: ${snapshot.error}'</span>);
+    } <span class="keyword">else</span> {
+      <span class="keyword">return</span> <span class="class">CircularProgressIndicator</span>();
+    }
+  },
+)
+</div>
+
+        <h3>🎯 Key Interview Questions - Module 1</h3>
+        
+        <div class="important-box">
+            <h4>❓ Common Interview Questions</h4>
+            <ol style="margin-left: 30px;">
+                <li><strong>Q: What is Flutter and why use it?</strong>
+                    <br><em>A: Flutter is a cross-platform framework that lets you build apps for multiple platforms with a single codebase. Benefits include hot reload, native performance, and beautiful UI.</em>
+                </li>
+                <br>
+                <li><strong>Q: What's the difference between StatefulWidget and StatelessWidget?</strong>
+                    <br><em>A: StatelessWidget is immutable and doesn't change. StatefulWidget can change over time and rebuild when setState() is called.</em>
+                </li>
+                <br>
+                <li><strong>Q: Explain Future vs Stream in Dart.</strong>
+                    <br><em>A: Future represents a single async value that will arrive later (like ordering pizza). Stream represents multiple values over time (like a radio broadcast).</em>
+                </li>
+                <br>
+                <li><strong>Q: What is the Widget Tree?</strong>
+                    <br><em>A: A hierarchical structure where each widget can contain child widgets, forming a tree from root to leaves.</em>
+                </li>
+                <br>
+                <li><strong>Q: When would you use const vs final?</strong>
+                    <br><em>A: const is for compile-time constants (value known before app runs). final is for runtime constants (value set once when app runs, then never changes).</em>
+                </li>
+            </ol>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-button">← Back to Index</a>
+            <a href="course-module2.html" class="nav-button">Next: Module 2 →</a>
+        </div>
+
+        <div class="footer">
+            <p><em>Made with ❤️ by Gul Faraz Ahmed for Flutter Developers Everywhere!</em></p>
+            <p style="margin-top: 10px;">Module 1: Flutter Fundamentals - Complete Guide</p>
+        </div>
+    </div>
+</body>
+</html>
