@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter Interview Course - Module 3: State Management</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.8;
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 50%, #667eea 100%);
+            color: #2c3e50;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .course-header {
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .course-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .course-header h1 {
+            color: white;
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .course-header p {
+            font-size: 1.4em;
+            opacity: 0.95;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .module-badge {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 700;
+            margin: 25px 0;
+            font-size: 1.3em;
+            box-shadow: 0 5px 15px rgba(245,87,108,0.4);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .content { padding: 50px; }
+        
+        .lesson-divider {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 50px 0 40px 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255,107,107,0.3);
+        }
+        
+        .lesson-divider h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 800;
+        }
+        
+        .analogy-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 6px solid #4caf50;
+            box-shadow: 0 5px 20px rgba(76,175,80,0.2);
+            display: flex;
+            gap: 20px;
+            align-items: start;
+        }
+        
+        .analogy-emoji { font-size: 3.5em; line-height: 1; }
+        
+        .analogy-box h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .analogy-box p {
+            color: #1b5e20;
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+        
+        h2 {
+            color: #8e2de2;
+            font-size: 2.3em;
+            margin-top: 40px;
+            border-left: 6px solid #8e2de2;
+            padding-left: 20px;
+            font-weight: 700;
+        }
+        
+        h3 { color: #e74c3c; font-size: 1.9em; margin-top: 35px; font-weight: 700; }
+        h4 { color: #27ae60; font-size: 1.5em; margin-top: 25px; font-weight: 600; }
+        
+        p, li { font-size: 1.1em; margin: 15px 0; color: #34495e; }
+        ul, ol { margin: 20px 0; padding-left: 30px; }
+        li { margin: 12px 0; padding-left: 10px; }
+        
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            border: 1px solid #333;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .tip-box {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-left: 6px solid #2196f3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(33,150,243,0.2);
+        }
+        
+        .tip-box h4 { color: #1565c0; margin-top: 0; font-size: 1.4em; }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-left: 6px solid #ff9800;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(255,152,0,0.2);
+        }
+        
+        .warning-box h4 { color: #e65100; margin-top: 0; }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #8e2de2, #4a00e0);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        td {
+            padding: 18px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+        
+        tr:hover td { background: #f5f5f5; transition: background 0.3s ease; }
+        
+        .code-inline {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: #c7254e;
+            font-size: 0.95em;
+        }
+        
+        .interview-section {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            padding: 35px;
+            border-radius: 15px;
+            margin: 40px 0;
+            border-left: 6px solid #9c27b0;
+            box-shadow: 0 5px 20px rgba(156,39,176,0.2);
+        }
+        
+        .interview-section h3 { color: #6a1b9a; margin-top: 0; font-size: 2em; }
+        
+        .interview-qa {
+            margin: 25px 0;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .question {
+            font-weight: 700;
+            color: #7b1fa2;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+        }
+        
+        .answer {
+            color: #4a148c;
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+        
+        .nav-button {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 30px;
+            background: linear-gradient(135deg, #8e2de2, #4a00e0);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(142,45,226,0.3);
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(142,45,226,0.5);
+        }
+        
+        .nav-button.prev { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .nav-button.next { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .course-header h1 { font-size: 2.5em; }
+            .content { padding: 30px 20px; }
+            .analogy-box { flex-direction: column; text-align: center; }
+            .navigation-buttons { flex-direction: column; }
+            .nav-button { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="course-header">
+            <h1>⚡ Module 3: State Management</h1>
+            <p>Master the art of managing app state from simple to complex patterns</p>
+            <div class="module-badge">Module 3 of 8</div>
+        </div>
+        
+        <div class="content">
+            
+            <!-- ========================================== -->
+            <!-- LESSON 3.1: BASIC STATE MANAGEMENT -->
+            <!-- ========================================== -->
+            
+            <div class="lesson-divider">
+                <h2>📊 Lesson 3.1: Basic State Management with setState()</h2>
+            </div>
+            
+            <div class="analogy-box">
+                <div class="analogy-emoji">📝</div>
+                <div>
+                    <h3>Explain Like You're 5: Classroom Whiteboard</h3>
+                    <p>
+                        Imagine a teacher writing on a whiteboard! When the teacher erases and writes new information, 
+                        everyone in the class sees the update instantly. <strong>setState()</strong> is like erasing 
+                        and rewriting - it tells Flutter "Hey, something changed, redraw the screen!" The whiteboard 
+                        is your widget, and calling setState() tells Flutter to "refresh" it so everyone sees the 
+                        latest information.
+                    </p>
+                </div>
+            </div>
+            
+            <h3>🎯 What is State?</h3>
+            
+            <p>
+                <strong>State</strong> is data that can change over time. When state changes, the UI needs to rebuild 
+                to reflect those changes. Examples: counter value, selected tab, checkbox status, form inputs.
+            </p>
+            
+            <h4>1️⃣ StatefulWidget Anatomy</h4>
+            
+            <pre><code class="language-dart">// The widget class (immutable)
+class CounterWidget extends StatefulWidget {
+  const CounterWidget({Key? key}) : super(key: key);
+  
+  @override
+  State&lt;CounterWidget&gt; createState() => _CounterWidgetState();
+}
+
+// The state class (mutable - holds changing data)
+class _CounterWidgetState extends State&lt;CounterWidget&gt; {
+  int _counter = 0; // State variable (private, can change)
+  
+  void _incrementCounter() {
+    setState(() {
+      _counter++; // Modify state inside setState()
+    });
+    // After setState(), Flutter rebuilds the widget tree
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('You clicked $_counter times', style: TextStyle(fontSize: 24)),
+        SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: _incrementCounter,
+          child: Text('Click Me!'),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+            
+            <h4>2️⃣ StatefulWidget Lifecycle</h4>
+            
+            <p>
+                Understanding the lifecycle is crucial for interviews and debugging!
+            </p>
+            
+            <pre><code class="language-dart">class LifecycleDemo extends StatefulWidget {
+  @override
+  State&lt;LifecycleDemo&gt; createState() => _LifecycleDemoState();
+}
+
+class _LifecycleDemoState extends State&lt;LifecycleDemo&gt; {
+  
+  // 1️⃣ Called when state object is created (once)
+  @override
+  void initState() {
+    super.initState();
+    print('initState: Initialize data, start timers, API calls');
+    // Perfect for: Setting initial values, starting listeners
+  }
+  
+  // 2️⃣ Called when widget configuration changes (rare)
+  @override
+  void didUpdateWidget(covariant LifecycleDemo oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    print('didUpdateWidget: Parent rebuilt with new config');
+  }
+  
+  // 3️⃣ Called every time the widget rebuilds
+  @override
+  Widget build(BuildContext context) {
+    print('build: Rebuilding widget tree');
+    return Container();
+  }
+  
+  // 4️⃣ Called when widget is removed permanently
+  @override
+  void dispose() {
+    print('dispose: Clean up controllers, listeners, timers');
+    super.dispose();
+    // CRITICAL: Cancel subscriptions, dispose controllers to prevent memory leaks!
+  }
+}</code></pre>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lifecycle Method</th>
+                        <th>When Called</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>initState()</strong></td>
+                        <td>Once, when State object created</td>
+                        <td>Initialize data, start API calls, create controllers</td>
+                    </tr>
+                    <tr>
+                        <td><strong>build()</strong></td>
+                        <td>Every time setState() is called</td>
+                        <td>Return the widget tree (UI)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>didUpdateWidget()</strong></td>
+                        <td>When parent rebuilds with new config</td>
+                        <td>Compare old and new widget properties</td>
+                    </tr>
+                    <tr>
+                        <td><strong>setState()</strong></td>
+                        <td>When you want to update UI</td>
+                        <td>Modify state variables and trigger rebuild</td>
+                    </tr>
+                    <tr>
+                        <td><strong>dispose()</strong></td>
+                        <td>When widget permanently removed</td>
+                        <td>Clean up: dispose controllers, cancel timers, close streams</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="warning-box">
+                <h4>⚠️ Common setState() Mistakes</h4>
+                <pre><code class="language-dart">// ❌ WRONG: Modifying state without setState
+void _increment() {
+  _counter++; // UI won't update!
+}
+
+// ✅ CORRECT: Always use setState
+void _increment() {
+  setState(() {
+    _counter++; // UI updates immediately
+  });
+}
+
+// ❌ WRONG: Heavy operations inside setState
+setState(() {
+  _data = heavyComputation(); // Blocks UI thread!
+});
+
+// ✅ CORRECT: Compute first, then setState
+final result = heavyComputation();
+setState(() {
+  _data = result; // Only update state
+});</code></pre>
+            </div>
+            
+            
+            <!-- ========================================== -->
+            <!-- LESSON 3.2: INHERITEDWIDGET PATTERN -->
+            <!-- ========================================== -->
+            
+            <div class="lesson-divider">
+                <h2>🎂 Lesson 3.2: InheritedWidget & InheritedModel</h2>
+            </div>
+            
+            <div class="analogy-box">
+                <div class="analogy-emoji">🍪</div>
+                <div>
+                    <h3>Explain Like You're 5: Cookie Basket</h3>
+                    <p>
+                        Imagine a big basket of cookies in the kitchen that everyone in the house can access! 
+                        <strong>InheritedWidget</strong> is like that cookie basket - it sits high up in the widget 
+                        tree (kitchen), and any child widget below it (family members) can reach up and grab data 
+                        (cookies) without needing to pass them hand-to-hand. When the basket changes (mom refills it), 
+                        everyone who was watching it gets notified!
+                    </p>
+                </div>
+            </div>
+            
+            <h3>🎯 Why InheritedWidget?</h3>
+            
+            <p>
+                Passing data through multiple widget layers using constructors is tedious. InheritedWidget allows 
+                any descendant widget to access shared data without prop drilling.
+            </p>
+            
+            <h4>1️⃣ Creating an InheritedWidget</h4>
+            
+            <pre><code class="language-dart">// Define the InheritedWidget
+class UserData extends InheritedWidget {
+  final String userName;
+  final int userAge;
+  
+  const UserData({
+    Key? key,
+    required this.userName,
+    required this.userAge,
+    required Widget child,
+  }) : super(key: key, child: child);
+  
+  // Provide static method to access data from anywhere below
+  static UserData? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType&lt;UserData&gt;();
+  }
+  
+  // Return true to rebuild dependent widgets when data changes
+  @override
+  bool updateShouldNotify(UserData oldWidget) {
+    return userName != oldWidget.userName || userAge != oldWidget.userAge;
+  }
+}
+
+// Usage: Wrap your widget tree
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return UserData(
+      userName: 'John Doe',
+      userAge: 25,
+      child: MaterialApp(
+        home: HomePage(), // HomePage and all children can access UserData
+      ),
+    );
+  }
+}
+
+// Access data from any descendant widget
+class ProfileWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final userData = UserData.of(context)!; // Access inherited data
+    
+    return Column(
+      children: [
+        Text('Name: ${userData.userName}'),
+        Text('Age: ${userData.userAge}'),
+      ],
+    );
+  }
+}</code></pre>
+            
+            <h4>2️⃣ InheritedModel - Optimized Updates</h4>
+            
+            <p>
+                InheritedModel allows fine-grained updates - only rebuild widgets that depend on specific aspects 
+                of data.
+            </p>
+            
+            <pre><code class="language-dart">// Define aspects (what can change)
+enum UserAspect { name, age, email }
+
+class UserModel extends InheritedModel&lt;UserAspect&gt; {
+  final String name;
+  final int age;
+  final String email;
+  
+  const UserModel({
+    Key? key,
+    required this.name,
+    required this.age,
+    required this.email,
+    required Widget child,
+  }) : super(key: key, child: child);
+  
+  static UserModel? of(BuildContext context, {UserAspect? aspect}) {
+    return InheritedModel.inheritFrom&lt;UserModel&gt;(context, aspect: aspect);
+  }
+  
+  @override
+  bool updateShouldNotify(UserModel oldWidget) {
+    return name != oldWidget.name || age != oldWidget.age || email != oldWidget.email;
+  }
+  
+  @override
+  bool updateShouldNotifyDependent(UserModel oldWidget, Set&lt;UserAspect&gt; dependencies) {
+    if (dependencies.contains(UserAspect.name) && name != oldWidget.name) return true;
+    if (dependencies.contains(UserAspect.age) && age != oldWidget.age) return true;
+    if (dependencies.contains(UserAspect.email) && email != oldWidget.email) return true;
+    return false;
+  }
+}
+
+// Widget that only rebuilds when name changes
+class NameDisplay extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final user = UserModel.of(context, aspect: UserAspect.name)!;
+    return Text('Name: ${user.name}');
+    // Only rebuilds when name changes, not age or email!
+  }
+}</code></pre>
+            
+            <div class="tip-box">
+                <h4>💡 When to Use InheritedWidget?</h4>
+                <ul>
+                    <li><strong>Theme data:</strong> Colors, fonts, styles app-wide</li>
+                    <li><strong>User authentication:</strong> Current user info accessible everywhere</li>
+                    <li><strong>App settings:</strong> Language, dark mode preferences</li>
+                    <li><strong>Media queries:</strong> Screen size data (Flutter uses this internally)</li>
+                </ul>
+                <p>
+                    <strong>Don't use for:</strong> Frequently changing data (use Provider/Riverpod instead) or 
+                    complex state logic (use Bloc/Redux).
+                </p>
+            </div>
+            
+            
+            <!-- ========================================== -->
+            <!-- LESSON 3.3: ADVANCED STATE MANAGEMENT -->
+            <!-- ========================================== -->
+            
+            <div class="lesson-divider">
+                <h2>🚀 Lesson 3.3: Provider, Bloc & Modern Patterns</h2>
+            </div>
+            
+            <div class="analogy-box">
+                <div class="analogy-emoji">🏦</div>
+                <div>
+                    <h3>Explain Like You're 5: Bank Account System</h3>
+                    <p>
+                        Think of advanced state management like a bank! <strong>Provider</strong> is like a bank 
+                        teller who gives you your account balance whenever you ask (simple access). 
+                        <strong>Bloc</strong> is like an ATM machine - you press buttons (events), it processes 
+                        your request, and gives you money (new state). Both keep your money (state) safe and 
+                        organized, but work differently!
+                    </p>
+                </div>
+            </div>
+            
+            <h3>🎯 Provider Pattern</h3>
+            
+            <p>
+                Provider is the recommended state management solution by Flutter team. It's built on top of 
+                InheritedWidget but much easier to use.
+            </p>
+            
+            <h4>1️⃣ Setting Up Provider</h4>
+            
+            <pre><code class="language-dart">// pubspec.yaml
+dependencies:
+  provider: ^6.0.0
+
+// Create a ChangeNotifier model
+class CounterModel extends ChangeNotifier {
+  int _count = 0;
+  
+  int get count => _count; // Getter to access count
+  
+  void increment() {
+    _count++;
+    notifyListeners(); // Notify all listeners to rebuild
+  }
+  
+  void reset() {
+    _count = 0;
+    notifyListeners();
+  }
+}
+
+// Provide it at the top of widget tree
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => CounterModel(),
+      child: MaterialApp(
+        home: HomePage(),
+      ),
+    );
+  }
+}
+
+// Consume it anywhere below
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Listen to changes (rebuilds when notifyListeners called)
+    final counter = context.watch&lt;CounterModel&gt;();
+    
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Count: ${counter.count}', style: TextStyle(fontSize: 40)),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Call method without rebuilding this widget
+                context.read&lt;CounterModel&gt;().increment();
+              },
+              child: Text('Increment'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            
+            <h4>2️⃣ Provider Methods</h4>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Purpose</th>
+                        <th>Rebuilds Widget?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>context.watch&lt;T&gt;()</code></td>
+                        <td>Listen to changes, get value</td>
+                        <td>✅ Yes</td>
+                    </tr>
+                    <tr>
+                        <td><code>context.read&lt;T&gt;()</code></td>
+                        <td>Get value without listening</td>
+                        <td>❌ No</td>
+                    </tr>
+                    <tr>
+                        <td><code>context.select&lt;T, R&gt;()</code></td>
+                        <td>Listen to specific property only</td>
+                        <td>✅ Yes (only when selected property changes)</td>
+                    </tr>
+                    <tr>
+                        <td><code>Consumer&lt;T&gt;</code> widget</td>
+                        <td>Rebuild only Consumer part</td>
+                        <td>✅ Yes (only Consumer subtree)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>⚡ Bloc Pattern</h3>
+            
+            <p>
+                Bloc (Business Logic Component) separates UI from business logic using Streams and Events.
+            </p>
+            
+            <h4>1️⃣ Bloc Architecture</h4>
+            
+            <pre><code class="language-dart">// pubspec.yaml
+dependencies:
+  flutter_bloc: ^8.0.0
+
+// Define Events (user actions)
+abstract class CounterEvent {}
+
+class IncrementEvent extends CounterEvent {}
+class DecrementEvent extends CounterEvent {}
+
+// Define State (UI state)
+class CounterState {
+  final int count;
+  CounterState(this.count);
+}
+
+// Create Bloc (processes events → emits states)
+class CounterBloc extends Bloc&lt;CounterEvent, CounterState&gt; {
+  CounterBloc() : super(CounterState(0)) {
+    // Handle increment event
+    on&lt;IncrementEvent&gt;((event, emit) {
+      emit(CounterState(state.count + 1));
+    });
+    
+    // Handle decrement event
+    on&lt;DecrementEvent&gt;((event, emit) {
+      emit(CounterState(state.count - 1));
+    });
+  }
+}
+
+// Provide Bloc
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CounterBloc(),
+      child: MaterialApp(home: HomePage()),
+    );
+  }
+}
+
+// Use Bloc in UI
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: BlocBuilder&lt;CounterBloc, CounterState&gt;(
+        builder: (context, state) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Count: ${state.count}', style: TextStyle(fontSize: 40)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read&lt;CounterBloc&gt;().add(IncrementEvent());
+                      },
+                      child: Text('+'),
+                    ),
+                    SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read&lt;CounterBloc&gt;().add(DecrementEvent());
+                      },
+                      child: Text('-'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}</code></pre>
+            
+            <h3>📊 State Management Comparison</h3>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Solution</th>
+                        <th>Complexity</th>
+                        <th>Best For</th>
+                        <th>Learning Curve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>setState()</strong></td>
+                        <td>Low</td>
+                        <td>Simple widgets, local state</td>
+                        <td>Easy</td>
+                    </tr>
+                    <tr>
+                        <td><strong>InheritedWidget</strong></td>
+                        <td>Medium</td>
+                        <td>Static data sharing, themes</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Provider</strong></td>
+                        <td>Medium</td>
+                        <td>Most apps, recommended by Flutter</td>
+                        <td>Easy-Medium</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bloc</strong></td>
+                        <td>High</td>
+                        <td>Large apps, complex logic, testing</td>
+                        <td>Hard</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Riverpod</strong></td>
+                        <td>Medium-High</td>
+                        <td>Modern apps, compile-time safety</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GetX</strong></td>
+                        <td>Low</td>
+                        <td>Quick development, routing + state</td>
+                        <td>Easy</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="tip-box">
+                <h4>💡 Choosing State Management</h4>
+                <p><strong>Decision Tree:</strong></p>
+                <ul>
+                    <li>Single screen state? → <strong>setState()</strong></li>
+                    <li>Small app (5-10 screens)? → <strong>Provider</strong></li>
+                    <li>Large app with complex logic? → <strong>Bloc</strong> or <strong>Riverpod</strong></li>
+                    <li>Want rapid development? → <strong>GetX</strong></li>
+                    <li>Team preference/existing codebase? → Use what team knows</li>
+                </ul>
+            </div>
+            
+            
+            <!-- ========================================== -->
+            <!-- INTERVIEW QUESTIONS -->
+            <!-- ========================================== -->
+            
+            <div class="interview-section">
+                <h3>🎯 Common Interview Questions - Module 3</h3>
+                
+                <div class="interview-qa">
+                    <div class="question">Q1: What happens when you call setState()?</div>
+                    <div class="answer">
+                        <strong>A:</strong> setState() does two things: 
+                        1) Marks the widget as "dirty" (needs rebuild), 
+                        2) Schedules a call to build() method. 
+                        Flutter's rendering engine batches these updates and rebuilds the widget tree efficiently. 
+                        It only rebuilds the specific widget and its descendants, not the entire screen. 
+                        The changes must happen inside setState's callback, or the UI won't update.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q2: What's the difference between initState() and build() in StatefulWidget?</div>
+                    <div class="answer">
+                        <strong>A:</strong> initState() is called ONCE when the State object is first created. 
+                        Use it for initialization: creating controllers, starting API calls, subscribing to streams. 
+                        build() is called EVERY TIME the widget needs to rebuild (after setState, hot reload, 
+                        parent rebuild). build() must be pure - no side effects, just return widgets.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q3: Why is dispose() important?</div>
+                    <div class="answer">
+                        <strong>A:</strong> dispose() prevents memory leaks. When a StatefulWidget is removed 
+                        from the tree, you must clean up resources: dispose TextEditingController, 
+                        AnimationController, cancel Timer, close Streams, remove listeners. 
+                        Failure to dispose causes memory leaks because these objects continue running even after 
+                        widget is destroyed.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q4: How does InheritedWidget differ from passing data through constructors?</div>
+                    <div class="answer">
+                        <strong>A:</strong> InheritedWidget allows any descendant widget to access data without 
+                        prop drilling (passing through every intermediate widget). With constructors, you must 
+                        pass data through every layer (A → B → C → D). InheritedWidget lets D access data directly 
+                        from A. It also automatically rebuilds dependents when data changes via updateShouldNotify.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q5: What's the difference between context.watch, context.read, and context.select in Provider?</div>
+                    <div class="answer">
+                        <strong>A:</strong>
+                        <ul>
+                            <li><strong>watch()</strong>: Listens to changes, rebuilds widget when notifyListeners called. Use in build().</li>
+                            <li><strong>read()</strong>: Gets value without listening, no rebuilds. Use in callbacks/event handlers.</li>
+                            <li><strong>select()</strong>: Listens to specific property only, rebuilds only when that property changes. More efficient than watch().</li>
+                        </ul>
+                        Example: <code>context.watch&lt;User&gt;()</code> rebuilds on any change, 
+                        <code>context.select&lt;User, String&gt;((user) => user.name)</code> rebuilds only when name changes.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q6: Explain the Bloc pattern flow.</div>
+                    <div class="answer">
+                        <strong>A:</strong> Bloc uses unidirectional data flow:
+                        <ol>
+                            <li><strong>UI</strong> dispatches an Event (user clicks button)</li>
+                            <li><strong>Bloc</strong> receives event, processes business logic</li>
+                            <li><strong>Bloc</strong> emits new State</li>
+                            <li><strong>UI</strong> rebuilds based on new state</li>
+                        </ol>
+                        Benefits: Clear separation of UI and logic, easy testing (test events → states), 
+                        predictable state changes. Uses Streams internally (reactive programming).
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q7: When should you NOT use setState?</div>
+                    <div class="answer">
+                        <strong>A:</strong> Don't use setState when:
+                        <ul>
+                            <li>Changing data shared across many screens (use Provider/Bloc)</li>
+                            <li>State is complex with many related variables (use state management)</li>
+                            <li>You need to test business logic separately (Bloc provides better testability)</li>
+                            <li>Building large-scale apps (setState doesn't scale well)</li>
+                        </ul>
+                        setState is perfect for simple, local widget state like checkboxes, text fields, animations.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q8: What is ChangeNotifier and how does it work?</div>
+                    <div class="answer">
+                        <strong>A:</strong> ChangeNotifier is a class from Flutter that provides change 
+                        notification to listeners. When you call notifyListeners(), all registered listeners 
+                        (widgets using Provider) rebuild. It's the foundation of Provider pattern.
+                        <pre><code>class MyModel extends ChangeNotifier {
+  int _value = 0;
+  
+  void update() {
+    _value++;
+    notifyListeners(); // Triggers rebuild of all listeners
+  }
+}</code></pre>
+                        Must dispose ChangeNotifier to prevent memory leaks!
+                    </div>
+                </div>
+                
+            </div>
+            
+            
+            <!-- ========================================== -->
+            <!-- NAVIGATION -->
+            <!-- ========================================== -->
+            
+            <div class="navigation-buttons">
+                <a href="course-module2.html" class="nav-button prev">
+                    ← Previous: Module 2
+                </a>
+                <a href="course-index.html" class="nav-button">
+                    📚 Course Home
+                </a>
+                <a href="course-module4.html" class="nav-button next">
+                    Next: Module 4 →
+                </a>
+            </div>
+            
+        </div>
+        
+        <footer>
+            <p><strong>Module 3 of 8</strong> • Flutter Interview Course</p>
+            <p>© 2025 • Crafted with ❤️ for Flutter Developers</p>
+        </footer>
+    </div>
+</body>
+</html>

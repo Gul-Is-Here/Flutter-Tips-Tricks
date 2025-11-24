@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter Interview Course - Module 2: UI & Layouts</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.8;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            color: #2c3e50;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .course-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .course-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .course-header h1 {
+            color: white;
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .course-header p {
+            font-size: 1.4em;
+            opacity: 0.95;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .module-badge {
+            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
+            color: white;
+            padding: 15px 35px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 700;
+            margin: 25px 0;
+            font-size: 1.3em;
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .content {
+            padding: 50px;
+        }
+        
+        .lesson-divider {
+            background: linear-gradient(135deg, #00c9ff, #92fe9d);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 50px 0 40px 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,201,255,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lesson-divider::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, white, transparent);
+        }
+        
+        .lesson-divider h2 {
+            color: white;
+            border: none;
+            padding: 0;
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 800;
+        }
+        
+        .analogy-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 6px solid #ff9800;
+            box-shadow: 0 5px 20px rgba(255,152,0,0.2);
+            display: flex;
+            gap: 20px;
+            align-items: start;
+        }
+        
+        .analogy-emoji {
+            font-size: 3.5em;
+            line-height: 1;
+        }
+        
+        .analogy-box h3 {
+            color: #e65100;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .analogy-box p {
+            color: #5d4037;
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 2.3em;
+            margin-top: 40px;
+            border-left: 6px solid #667eea;
+            padding-left: 20px;
+            font-weight: 700;
+        }
+        
+        h3 {
+            color: #e74c3c;
+            font-size: 1.9em;
+            margin-top: 35px;
+            font-weight: 700;
+        }
+        
+        h4 {
+            color: #27ae60;
+            font-size: 1.5em;
+            margin-top: 25px;
+            font-weight: 600;
+        }
+        
+        p, li {
+            font-size: 1.1em;
+            margin: 15px 0;
+            color: #34495e;
+        }
+        
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 12px 0;
+            padding-left: 10px;
+        }
+        
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            border: 1px solid #333;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .tip-box {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-left: 6px solid #2196f3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(33,150,243,0.2);
+        }
+        
+        .tip-box h4 {
+            color: #1565c0;
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-left: 6px solid #ff9800;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(255,152,0,0.2);
+        }
+        
+        .warning-box h4 {
+            color: #e65100;
+            margin-top: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        td {
+            padding: 18px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+        
+        tr:hover td {
+            background: #f5f5f5;
+            transition: background 0.3s ease;
+        }
+        
+        .code-inline {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: #c7254e;
+            font-size: 0.95em;
+        }
+        
+        .interview-section {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            padding: 35px;
+            border-radius: 15px;
+            margin: 40px 0;
+            border-left: 6px solid #9c27b0;
+            box-shadow: 0 5px 20px rgba(156,39,176,0.2);
+        }
+        
+        .interview-section h3 {
+            color: #6a1b9a;
+            margin-top: 0;
+            font-size: 2em;
+        }
+        
+        .interview-qa {
+            margin: 25px 0;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .question {
+            font-weight: 700;
+            color: #7b1fa2;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+        }
+        
+        .answer {
+            color: #4a148c;
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+        
+        .nav-button {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.5);
+        }
+        
+        .nav-button.prev {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+        
+        .nav-button.next {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 1.1em;
+        }
+        
+        .emoji-large {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .course-header h1 { font-size: 2.5em; }
+            .content { padding: 30px 20px; }
+            .analogy-box { flex-direction: column; text-align: center; }
+            .navigation-buttons { flex-direction: column; }
+            .nav-button { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="course-header">
+            <h1>🎨 Module 2: UI & Layouts</h1>
+            <p>Master Flutter's powerful layout system and create stunning interfaces</p>
+            <div class="module-badge">Module 2 of 8</div>
+        </div>
+        
+        <div class="content">
+            
+            <!-- ========================================== -->
+            <!-- LESSON 2.1: LAYOUT FUNDAMENTALS -->
+            <!-- ========================================== -->
+            
+            <div class="lesson-divider">
+                <h2>📐 Lesson 2.1: Layout Fundamentals</h2>
+            </div>
+            
+            <div class="analogy-box">
+                <div class="analogy-emoji">📦</div>
+                <div>
+                    <h3>Explain Like You're 5: Building Block Shelves</h3>
+                    <p>
+                        Imagine you're organizing toys on shelves! <strong>Row</strong> is like arranging toys 
+                        side-by-side on a horizontal shelf (←→). <strong>Column</strong> is like stacking toys 
+                        on a vertical shelf (↑↓). <strong>Stack</strong> is like placing toys on top of each 
+                        other (layers), where you can see through to the bottom. Just like organizing your room, 
+                        Flutter helps you organize widgets on the screen!
+                    </p>
+                </div>
+            </div>
+            
+            <h3>🎯 Row, Column & Stack - The Layout Trinity</h3>
+            
+            <p>
+                These three widgets are the foundation of Flutter layouts. Understanding them is crucial for 
+                building any UI.
+            </p>
+            
+            <h4>1️⃣ Row - Horizontal Layout</h4>
+            <p>
+                Arranges children horizontally from left to right (or right to left in RTL languages).
+            </p>
+            
+            <pre><code class="language-dart">Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Horizontal spacing
+  crossAxisAlignment: CrossAxisAlignment.center,     // Vertical alignment
+  children: [
+    Icon(Icons.home, size: 40),
+    Text('Home', style: TextStyle(fontSize: 20)),
+    Icon(Icons.arrow_forward, size: 40),
+  ],
+)
+
+// Output: 🏠  Home  →
+// Icons and text spread across horizontal space</code></pre>
+            
+            <h4>2️⃣ Column - Vertical Layout</h4>
+            <p>
+                Arranges children vertically from top to bottom.
+            </p>
+            
+            <pre><code class="language-dart">Column(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Vertical spacing
+  crossAxisAlignment: CrossAxisAlignment.start,     // Horizontal alignment
+  children: [
+    Text('Title', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+    Text('Subtitle', style: TextStyle(fontSize: 16)),
+    ElevatedButton(onPressed: () {}, child: Text('Click Me')),
+  ],
+)
+
+// Output (vertically):
+// Title (bold, large)
+// Subtitle (normal)
+// [Button]</code></pre>
+            
+            <h4>3️⃣ Stack - Layered Layout</h4>
+            <p>
+                Positions children on top of each other, like layers in Photoshop.
+            </p>
+            
+            <pre><code class="language-dart">Stack(
+  alignment: Alignment.center,
+  children: [
+    // Background image
+    Container(
+      width: 300,
+      height: 200,
+      color: Colors.blue,
+    ),
+    // Overlay icon
+    Icon(Icons.play_circle, size: 80, color: Colors.white),
+    // Positioned text
+    Positioned(
+      bottom: 10,
+      right: 10,
+      child: Text('Play Video', style: TextStyle(color: Colors.white)),
+    ),
+  ],
+)
+
+// Creates a video thumbnail with play button overlay!</code></pre>
+            
+            <h3>🎨 MainAxis vs CrossAxis Alignment</h3>
+            
+            <p>
+                This is a critical concept that confuses many developers. Let's clarify:
+            </p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Widget</th>
+                        <th>MainAxis</th>
+                        <th>CrossAxis</th>
+                        <th>Visual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Row</strong></td>
+                        <td>Horizontal (←→)</td>
+                        <td>Vertical (↑↓)</td>
+                        <td>Main controls left-right spacing, Cross controls up-down alignment</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Column</strong></td>
+                        <td>Vertical (↑↓)</td>
+                        <td>Horizontal (←→)</td>
+                        <td>Main controls top-bottom spacing, Cross controls left-right alignment</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="tip-box">
+                <h4>💡 Pro Tip: The Axis Rule</h4>
+                <p>
+                    <strong>MainAxis</strong> = The direction children flow<br>
+                    <strong>CrossAxis</strong> = Perpendicular to the main axis<br><br>
+                    For Row: Main is horizontal, Cross is vertical<br>
+                    For Column: Main is vertical, Cross is horizontal
+                </p>
+            </div>
+            
+            <h3>🔧 Flexible, Expanded & Spacer</h3>
+            
+            <p>
+                These widgets control how children consume available space in Row/Column.
+            </p>
+            
+            <pre><code class="language-dart">// Expanded: Takes all available space
+Row(
+  children: [
+    Container(width: 100, height: 50, color: Colors.red),
+    Expanded(
+      child: Container(height: 50, color: Colors.blue), // Fills remaining space
+    ),
+    Container(width: 100, height: 50, color: Colors.green),
+  ],
+)
+
+// Flexible: Takes space but can be smaller
+Row(
+  children: [
+    Flexible(
+      flex: 2, // Takes 2 parts of available space
+      child: Container(height: 50, color: Colors.orange),
+    ),
+    Flexible(
+      flex: 1, // Takes 1 part of available space
+      child: Container(height: 50, color: Colors.purple),
+    ),
+  ],
+)
+
+// Spacer: Creates empty space between widgets
+Row(
+  children: [
+    Icon(Icons.star),
+    Spacer(), // Pushes icon to left, text to right
+    Text('Rating'),
+  ],
+)</code></pre>
+            
+            <div class="warning-box">
+                <h4>⚠️ Common Mistake: Unbounded Constraints</h4>
+                <p>
+                    Never put a <code class="code-inline">ListView</code> inside a <code class="code-inline">Column</code> 
+                    without wrapping it in <code class="code-inline">Expanded</code> or giving it a fixed height!
+                </p>
+                <pre><code class="language-dart">// ❌ WRONG - Will cause overflow error
+Column(
+  children: [
+    Text('Title'),
+    ListView(children: [...]), // Error: unbounded height
+  ],
+)
+
+// ✅ CORRECT - Use Expanded
+Column(
+  children: [
+    Text('Title'),
+    Expanded(
+      child: ListView(children: [...]), // Now it works!
+    ),
+  ],
+)</code></pre>
+            </div>
+            
+            
+            <!-- ========================================== -->
+            <!-- LESSON 2.2: SCROLLABLE WIDGETS -->
+            <!-- ========================================== -->
+            
+            <div class="lesson-divider">
+                <h2>📜 Lesson 2.2: Scrollable Widgets</h2>
+            </div>
+            
+            <div class="analogy-box">
+                <div class="analogy-emoji">📚</div>
+                <div>
+                    <h3>Explain Like You're 5: Library Scrolls</h3>
+                    <p>
+                        Imagine a library with different ways to read books! <strong>ListView</strong> is like 
+                        reading a long scroll that you unroll as you read (vertical scrolling). 
+                        <strong>GridView</strong> is like looking at a bookshelf where books are arranged in 
+                        rows and columns. <strong>PageView</strong> is like flipping through a photo album, 
+                        one page at a time. Each has its special purpose!
+                    </p>
+                </div>
+            </div>
+            
+            <h3>📝 ListView - The Vertical Scroller</h3>
+            
+            <h4>1️⃣ ListView (Basic)</h4>
+            <pre><code class="language-dart">ListView(
+  padding: EdgeInsets.all(16),
+  children: [
+    ListTile(
+      leading: Icon(Icons.person),
+      title: Text('John Doe'),
+      subtitle: Text('Software Engineer'),
+    ),
+    ListTile(
+      leading: Icon(Icons.email),
+      title: Text('john@example.com'),
+    ),
+    ListTile(
+      leading: Icon(Icons.phone),
+      title: Text('+1 234 567 8900'),
+    ),
+  ],
+)</code></pre>
+            
+            <h4>2️⃣ ListView.builder - For Large Lists (Lazy Loading)</h4>
+            <p>
+                <strong>Use this for performance!</strong> Only builds visible items.
+            </p>
+            
+            <pre><code class="language-dart">ListView.builder(
+  itemCount: 1000, // Can handle thousands of items
+  itemBuilder: (context, index) {
+    return ListTile(
+      leading: CircleAvatar(child: Text('$index')),
+      title: Text('Item $index'),
+      subtitle: Text('Description for item $index'),
+      onTap: () => print('Tapped item $index'),
+    );
+  },
+)
+
+// Only renders items visible on screen
+// Scrolling is smooth even with 1000+ items!</code></pre>
+            
+            <h4>3️⃣ ListView.separated - With Dividers</h4>
+            <pre><code class="language-dart">ListView.separated(
+  itemCount: 20,
+  itemBuilder: (context, index) {
+    return ListTile(title: Text('Item $index'));
+  },
+  separatorBuilder: (context, index) {
+    return Divider(color: Colors.grey, thickness: 1); // Divider between items
+  },
+)</code></pre>
+            
+            <h3>🎯 GridView - The Grid Scroller</h3>
+            
+            <h4>1️⃣ GridView.count - Fixed Column Count</h4>
+            <pre><code class="language-dart">GridView.count(
+  crossAxisCount: 3, // 3 columns
+  crossAxisSpacing: 10, // Horizontal spacing
+  mainAxisSpacing: 10,  // Vertical spacing
+  padding: EdgeInsets.all(10),
+  children: List.generate(12, (index) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: Text('$index', style: TextStyle(color: Colors.white, fontSize: 24)),
+      ),
+    );
+  }),
+)
+
+// Creates a 3-column grid like a calculator or photo gallery!</code></pre>
+            
+            <h4>2️⃣ GridView.builder - For Large Grids</h4>
+            <pre><code class="language-dart">GridView.builder(
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    childAspectRatio: 0.75, // Width/Height ratio
+  ),
+  itemCount: 100,
+  itemBuilder: (context, index) {
+    return Card(
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+              color: Colors.primaries[index % Colors.primaries.length],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Text('Product $index'),
+          ),
+        ],
+      ),
+    );
+  },
+)
+
+// Perfect for product catalogs, photo galleries!</code></pre>
+            
+            <h3>📖 PageView - Swipeable Pages</h3>
+            
+            <pre><code class="language-dart">PageView(
+  children: [
+    Container(
+      color: Colors.red,
+      child: Center(child: Text('Page 1', style: TextStyle(fontSize: 40))),
+    ),
+    Container(
+      color: Colors.green,
+      child: Center(child: Text('Page 2', style: TextStyle(fontSize: 40))),
+    ),
+    Container(
+      color: Colors.blue,
+      child: Center(child: Text('Page 3', style: TextStyle(fontSize: 40))),
+    ),
+  ],
+)
+
+// Swipe left/right to navigate between pages
+// Perfect for onboarding screens or image galleries!</code></pre>
+            
+            <div class="tip-box">
+                <h4>💡 Performance Tip: Always Use .builder</h4>
+                <p>
+                    For lists with more than 20 items, always use <code class="code-inline">ListView.builder</code> 
+                    or <code class="code-inline">GridView.builder</code>. They only build visible items, 
+                    saving memory and improving scroll performance dramatically!
+                </p>
+            </div>
+            
+            
+            <!-- ========================================== -->
+            <!-- LESSON 2.3: MATERIAL & CUPERTINO DESIGN -->
+            <!-- ========================================== -->
+            
+            <div class="lesson-divider">
+                <h2>🎨 Lesson 2.3: Material & Cupertino Design</h2>
+            </div>
+            
+            <div class="analogy-box">
+                <div class="analogy-emoji">🏢</div>
+                <div>
+                    <h3>Explain Like You're 5: Two Theme Parks</h3>
+                    <p>
+                        Flutter has two "theme parks" for building apps! <strong>Material Design</strong> is 
+                        like Google's theme park with colorful buttons, floating actions, and paper-like cards 
+                        (Android style). <strong>Cupertino Design</strong> is like Apple's theme park with 
+                        smooth, minimal buttons and iOS-style switches. You can visit either park or even 
+                        mix them together!
+                    </p>
+                </div>
+            </div>
+            
+            <h3>🤖 Material Design Widgets (Android Style)</h3>
+            
+            <h4>1️⃣ Scaffold - The App Structure</h4>
+            <pre><code class="language-dart">Scaffold(
+  appBar: AppBar(
+    title: Text('My App'),
+    backgroundColor: Colors.blue,
+    actions: [
+      IconButton(icon: Icon(Icons.search), onPressed: () {}),
+      IconButton(icon: Icon(Icons.settings), onPressed: () {}),
+    ],
+  ),
+  body: Center(child: Text('Hello, Material!')),
+  floatingActionButton: FloatingActionButton(
+    onPressed: () {},
+    child: Icon(Icons.add),
+    backgroundColor: Colors.blue,
+  ),
+  drawer: Drawer(
+    child: ListView(
+      children: [
+        DrawerHeader(
+          decoration: BoxDecoration(color: Colors.blue),
+          child: Text('Menu', style: TextStyle(color: Colors.white, fontSize: 24)),
+        ),
+        ListTile(
+          leading: Icon(Icons.home),
+          title: Text('Home'),
+          onTap: () {},
+        ),
+      ],
+    ),
+  ),
+  bottomNavigationBar: BottomNavigationBar(
+    items: [
+      BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+      BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+      BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+    ],
+  ),
+)</code></pre>
+            
+            <h4>2️⃣ Material Buttons</h4>
+            <pre><code class="language-dart">// ElevatedButton - Raised with shadow
+ElevatedButton(
+  onPressed: () {},
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.blue,
+    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  ),
+  child: Text('Elevated Button'),
+)
+
+// TextButton - Flat, no background
+TextButton(
+  onPressed: () {},
+  child: Text('Text Button'),
+)
+
+// OutlinedButton - Border only
+OutlinedButton(
+  onPressed: () {},
+  child: Text('Outlined Button'),
+)
+
+// IconButton - Icon only
+IconButton(
+  icon: Icon(Icons.favorite),
+  color: Colors.red,
+  iconSize: 30,
+  onPressed: () {},
+)</code></pre>
+            
+            <h4>3️⃣ Card - Material Container</h4>
+            <pre><code class="language-dart">Card(
+  elevation: 8, // Shadow depth
+  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+  margin: EdgeInsets.all(10),
+  child: Padding(
+    padding: EdgeInsets.all(20),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Card Title', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('This is a beautiful Material Design card with elevation and rounded corners.'),
+      ],
+    ),
+  ),
+)</code></pre>
+            
+            <h3>🍎 Cupertino Widgets (iOS Style)</h3>
+            
+            <h4>1️⃣ CupertinoPageScaffold - iOS App Structure</h4>
+            <pre><code class="language-dart">import 'package:flutter/cupertino.dart';
+
+CupertinoPageScaffold(
+  navigationBar: CupertinoNavigationBar(
+    middle: Text('iOS App'),
+    trailing: CupertinoButton(
+      padding: EdgeInsets.zero,
+      child: Icon(CupertinoIcons.settings),
+      onPressed: () {},
+    ),
+  ),
+  child: Center(
+    child: Text('Hello, Cupertino!'),
+  ),
+)</code></pre>
+            
+            <h4>2️⃣ Cupertino Buttons</h4>
+            <pre><code class="language-dart">// CupertinoButton - iOS style button
+CupertinoButton(
+  color: CupertinoColors.activeBlue,
+  borderRadius: BorderRadius.circular(25),
+  child: Text('iOS Button'),
+  onPressed: () {},
+)
+
+// CupertinoButton.filled - Filled background
+CupertinoButton.filled(
+  child: Text('Filled Button'),
+  onPressed: () {},
+)</code></pre>
+            
+            <h4>3️⃣ Cupertino Controls</h4>
+            <pre><code class="language-dart">// CupertinoSwitch - iOS style switch
+CupertinoSwitch(
+  value: true,
+  onChanged: (value) {},
+  activeColor: CupertinoColors.activeGreen,
+)
+
+// CupertinoSlider - iOS style slider
+CupertinoSlider(
+  value: 0.5,
+  onChanged: (value) {},
+)
+
+// CupertinoActivityIndicator - iOS loading spinner
+CupertinoActivityIndicator(
+  radius: 15,
+  animating: true,
+)</code></pre>
+            
+            <h3>🎨 Theming Your App</h3>
+            
+            <pre><code class="language-dart">MaterialApp(
+  theme: ThemeData(
+    primarySwatch: Colors.blue,
+    brightness: Brightness.light,
+    
+    // Button theme
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    ),
+    
+    // Text theme
+    textTheme: TextTheme(
+      headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+      bodyLarge: TextStyle(fontSize: 16, color: Colors.black87),
+    ),
+    
+    // AppBar theme
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.blue,
+      elevation: 4,
+      centerTitle: true,
+    ),
+  ),
+  darkTheme: ThemeData(
+    brightness: Brightness.dark,
+    primarySwatch: Colors.blue,
+  ),
+  themeMode: ThemeMode.system, // Follows system theme
+  home: MyHomePage(),
+)</code></pre>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Material Design</th>
+                        <th>Cupertino Design</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Platform</strong></td>
+                        <td>Android (Google)</td>
+                        <td>iOS (Apple)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Button Style</strong></td>
+                        <td>Raised with ripple effect</td>
+                        <td>Flat with fade effect</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Navigation</strong></td>
+                        <td>AppBar with hamburger menu</td>
+                        <td>Navigation bar with back button</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dialogs</strong></td>
+                        <td>AlertDialog</td>
+                        <td>CupertinoAlertDialog</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Switches</strong></td>
+                        <td>Material toggle</td>
+                        <td>iOS-style slide switch</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Date Picker</strong></td>
+                        <td>Calendar style</td>
+                        <td>Wheel/drum style</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="tip-box">
+                <h4>💡 Best Practice: Platform-Adaptive Widgets</h4>
+                <p>
+                    Use <code class="code-inline">Platform.isIOS</code> to show iOS widgets on iPhones 
+                    and Material widgets on Android:
+                </p>
+                <pre><code class="language-dart">import 'dart:io';
+
+Platform.isIOS 
+  ? CupertinoButton(child: Text('iOS'), onPressed: () {})
+  : ElevatedButton(child: Text('Android'), onPressed: () {});</code></pre>
+            </div>
+            
+            
+            <!-- ========================================== -->
+            <!-- INTERVIEW QUESTIONS -->
+            <!-- ========================================== -->
+            
+            <div class="interview-section">
+                <h3>🎯 Common Interview Questions - Module 2</h3>
+                
+                <div class="interview-qa">
+                    <div class="question">Q1: What's the difference between MainAxisAlignment and CrossAxisAlignment in a Row?</div>
+                    <div class="answer">
+                        <strong>A:</strong> In a Row, MainAxisAlignment controls horizontal spacing (left-right) 
+                        because the main axis is horizontal. CrossAxisAlignment controls vertical alignment (up-down) 
+                        because it's perpendicular to the main axis. For Column, it's reversed: MainAxis is vertical, 
+                        CrossAxis is horizontal.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q2: When should you use ListView.builder instead of ListView?</div>
+                    <div class="answer">
+                        <strong>A:</strong> Use ListView.builder when you have a large number of items (20+) or 
+                        dynamic data. It implements lazy loading, meaning it only builds widgets that are visible 
+                        on screen, significantly improving performance and memory usage. Regular ListView builds 
+                        all children at once, which can cause lag with many items.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q3: What's the difference between Expanded and Flexible widgets?</div>
+                    <div class="answer">
+                        <strong>A:</strong> Both allow children to fill available space in Row/Column, but Expanded 
+                        forces the child to fill all available space (flex: 1 by default, fit: FlexFit.tight). 
+                        Flexible allows the child to be smaller than available space (fit: FlexFit.loose). 
+                        Expanded is actually a shorthand for Flexible(fit: FlexFit.tight).
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q4: How do you prevent overflow errors when putting ListView inside Column?</div>
+                    <div class="answer">
+                        <strong>A:</strong> Wrap the ListView with Expanded widget. Column gives unbounded height 
+                        constraints to its children, but ListView needs bounded constraints. Expanded tells ListView 
+                        to take only remaining available height.
+                        <pre><code>Column(
+  children: [
+    Text('Header'),
+    Expanded(child: ListView(...)), // ✅ Correct
+  ],
+)</code></pre>
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q5: What's the purpose of Stack widget and when would you use it?</div>
+                    <div class="answer">
+                        <strong>A:</strong> Stack allows overlaying widgets on top of each other, like layers in 
+                        Photoshop. Use it for:
+                        <ul>
+                            <li>Adding badges on icons (notification count)</li>
+                            <li>Creating overlays (play button on video thumbnail)</li>
+                            <li>Positioned text on images</li>
+                            <li>Custom shaped containers with decorations</li>
+                        </ul>
+                        Children are painted in order, so last child appears on top.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q6: Difference between Material Design and Cupertino Design?</div>
+                    <div class="answer">
+                        <strong>A:</strong> Material Design is Google's design language used for Android apps 
+                        (colorful, raised buttons, ripple effects, cards with elevation). Cupertino Design is 
+                        Apple's design language for iOS apps (minimal, flat buttons, slide switches, blurred 
+                        backgrounds). Flutter provides separate widget libraries for both: 
+                        material.dart and cupertino.dart.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q7: How do you make a widget take full width in a Column?</div>
+                    <div class="answer">
+                        <strong>A:</strong> Use SizedBox with double.infinity or Container with width: double.infinity:
+                        <pre><code>Column(
+  children: [
+    SizedBox(
+      width: double.infinity, // Takes full width
+      child: ElevatedButton(...),
+    ),
+  ],
+)</code></pre>
+                        Or use crossAxisAlignment: CrossAxisAlignment.stretch on the Column.
+                    </div>
+                </div>
+                
+                <div class="interview-qa">
+                    <div class="question">Q8: What's the childAspectRatio in GridView?</div>
+                    <div class="answer">
+                        <strong>A:</strong> childAspectRatio defines the width-to-height ratio of each grid item. 
+                        Default is 1.0 (square). A value of 2.0 makes items twice as wide as tall. For example, 
+                        0.75 makes items taller than they are wide (portrait), perfect for product cards or 
+                        photo galleries.
+                    </div>
+                </div>
+                
+            </div>
+            
+            
+            <!-- ========================================== -->
+            <!-- NAVIGATION -->
+            <!-- ========================================== -->
+            
+            <div class="navigation-buttons">
+                <a href="course-module1.html" class="nav-button prev">
+                    ← Previous: Module 1
+                </a>
+                <a href="course-index.html" class="nav-button">
+                    📚 Course Home
+                </a>
+                <a href="course-module3.html" class="nav-button next">
+                    Next: Module 3 →
+                </a>
+            </div>
+            
+        </div>
+        
+        <footer>
+            <p><strong>Module 2 of 8</strong> • Flutter Interview Course</p>
+            <p>© 2025 • Crafted with ❤️ for Flutter Developers</p>
+        </footer>
+    </div>
+</body>
+</html>
