@@ -233,6 +233,174 @@
     }
     
     .card.bonus .day-badge { background: linear-gradient(135deg, #667eea, #764ba2); }
+
+    .eyebrow {
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.4em;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 10px;
+    }
+
+    .tutorial-roadmap {
+      margin: 0 auto 60px;
+      padding: 40px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(0, 222, 142, 0.12), rgba(102, 126, 234, 0.12));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .tutorial-roadmap h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 12px;
+    }
+
+    .roadmap-description {
+      color: var(--text-dim);
+      max-width: 760px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .roadmap-card {
+      background: rgba(6, 9, 17, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .roadmap-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(0, 222, 142, 0.25), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .roadmap-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0, 222, 142, 0.35);
+    }
+
+    .roadmap-card:hover::after { opacity: 1; }
+
+    .roadmap-day {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 6px;
+    }
+
+    .roadmap-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 12px;
+    }
+
+    .roadmap-card ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0 0 16px;
+    }
+
+    .roadmap-card ul li {
+      position: relative;
+      padding-left: 18px;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    .roadmap-card ul li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .mini-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .mini-link:hover { color: #00ffb1; }
+
+    .important-topics {
+      margin: 70px auto 0;
+      padding: 45px 35px 20px;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(6, 9, 17, 0.8);
+    }
+
+    .important-topics h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 12px;
+    }
+
+    .important-description {
+      color: var(--text-dim);
+      max-width: 720px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .important-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .important-card {
+      padding: 22px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(0, 222, 142, 0.08), rgba(102, 126, 234, 0.1));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .topic-icon {
+      font-size: 1.8rem;
+    }
+
+    .topic-note {
+      margin-top: auto;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .topic-link {
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .topic-link:hover { color: #00ffb1; }
     
     .course-banner {
       background: linear-gradient(135deg, rgba(0, 222, 142, 0.15), rgba(102, 126, 234, 0.15));
@@ -363,6 +531,10 @@
       .subtitle { font-size: 1rem; }
       .grid { gap: 16px; grid-template-columns: 1fr; }
       .card { padding: 20px; }
+      .tutorial-roadmap,
+      .important-topics { padding: 24px; }
+      .roadmap-grid,
+      .important-grid { grid-template-columns: 1fr; }
     }
     
     html { scroll-behavior: smooth; }
@@ -376,6 +548,124 @@
     </header>
     
     <main class="container">
+      <section class="tutorial-roadmap">
+        <p class="eyebrow">Day-by-Day Tutorial</p>
+        <h2>Follow this guided 12-day interview prep path</h2>
+        <p class="roadmap-description">
+          Spend about 45 focused minutes per day. Skim the analogy, run the code sample, then journal one note about
+          how you will explain the concept to an interviewer. Repetition over twelve days keeps every skill fresh.
+        </p>
+        <div class="roadmap-grid">
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 1</div>
+            <h3>Widget Mindset</h3>
+            <ul>
+              <li>Compare Stateless vs Stateful rebuild logs.</li>
+              <li>Trace when external props force rebuilds.</li>
+            </ul>
+            <a class="mini-link" href="stateless_vs_stateful_guide(Day1).html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 2</div>
+            <h3>Const & Final Power</h3>
+            <ul>
+              <li>Practice converting runtime values to const/final.</li>
+              <li>Spot immutable widget trees for perf wins.</li>
+            </ul>
+            <a class="mini-link" href="const_vs_final_guide(Day2).html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 3</div>
+            <h3>BuildContext Explorer</h3>
+            <ul>
+              <li>Experiment with context.read vs context.watch.</li>
+              <li>Diagram ancestors needed for of(context) calls.</li>
+            </ul>
+            <a class="mini-link" href="build_context_guide(Day3).html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 4</div>
+            <h3>Faster Iterations</h3>
+            <ul>
+              <li>Use hot reload/reset scenarios on the sample app.</li>
+              <li>Document when state survives vs resets.</li>
+            </ul>
+            <a class="mini-link" href="hot_reload_vs_restart_guide(Day4).html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 5</div>
+            <h3>Layout Geometry</h3>
+            <ul>
+              <li>Flip MainAxis/CrossAxis configs in Row/Column.</li>
+              <li>Recreate the toy shelf analogy in code.</li>
+            </ul>
+            <a class="mini-link" href="main_vs_cross_axis_guide(Day5).html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 6</div>
+            <h3>Async Thinking</h3>
+            <ul>
+              <li>Rewrite synchronous flows with Future + await.</li>
+              <li>Chain multiple pizza-order Futures.</li>
+            </ul>
+            <a class="mini-link" href="future_vs_async(Day6).html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 7</div>
+            <h3>Lifecycle & setState</h3>
+            <ul>
+              <li>Log initState/dispose for reusable widgets.</li>
+              <li>Map data flow between parent and child.</li>
+            </ul>
+            <a class="mini-link" href="Day7andDay8.html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 8</div>
+            <h3>Provider Warm-up</h3>
+            <ul>
+              <li>Wrap the demo app with ChangeNotifierProvider.</li>
+              <li>Practice reading vs listening to state.</li>
+            </ul>
+            <a class="mini-link" href="Day7andDay8.html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 9</div>
+            <h3>Inherited Sharing</h3>
+            <ul>
+              <li>Pass theme data via custom InheritedWidget.</li>
+              <li>Explain updateShouldNotify in simple words.</li>
+            </ul>
+            <a class="mini-link" href="day9andday10.html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 10</div>
+            <h3>Keys & Identity</h3>
+            <ul>
+              <li>Fix a reorder bug with ValueKey vs ObjectKey.</li>
+              <li>Describe GlobalKey trade-offs.</li>
+            </ul>
+            <a class="mini-link" href="day9andday10.html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 11</div>
+            <h3>Navigation Flow</h3>
+            <ul>
+              <li>Implement push, pop, and pushReplacement.</li>
+              <li>Sketch deep-link flows with Navigator 2.0.</li>
+            </ul>
+            <a class="mini-link" href="Day11and12.html">Open lesson →</a>
+          </article>
+          <article class="roadmap-card">
+            <div class="roadmap-day">Day 12</div>
+            <h3>Lifecycle to Release</h3>
+            <ul>
+              <li>Observe didChangeAppLifecycleState logs.</li>
+              <li>List steps for store-ready builds.</li>
+            </ul>
+            <a class="mini-link" href="Day11and12.html">Open lesson →</a>
+          </article>
+        </div>
+      </section>
       <div class="course-banner">
         <div class="course-banner-content">
           <h3>🚀 Complete Flutter Interview Course</h3>
@@ -555,6 +845,59 @@
             <span>Download PDF</span>
           </a>
         </article>
+      </section>
+
+      <section class="important-topics">
+        <p class="eyebrow">More Important Topics</p>
+        <h2>Round out your Flutter interview toolkit</h2>
+        <p class="important-description">
+          Hiring panels often dive into systems-level discussions as well. Use these cards as a checklist for
+          topics that complement the 12-day core curriculum and signal senior-level readiness.
+        </p>
+        <div class="important-grid">
+          <article class="important-card">
+            <div class="topic-icon">🎞️</div>
+            <h3>Animations & Motion</h3>
+            <p>Create delightful UX with implicit/explicit animations, Hero transitions, and staggered reveals.</p>
+            <span class="topic-note">See animation labs inside Module 5 of the full course.</span>
+            <a class="topic-link" href="course-index.html">Go to Module 5 →</a>
+          </article>
+          <article class="important-card">
+            <div class="topic-icon">🧪</div>
+            <h3>Testing & Quality</h3>
+            <p>Be ready to write unit, widget, and integration tests plus mock async APIs live.</p>
+            <span class="topic-note">Use Module 7 checklists to structure your answer.</span>
+            <a class="topic-link" href="course-index.html">Test playbook →</a>
+          </article>
+          <article class="important-card">
+            <div class="topic-icon">⚡</div>
+            <h3>Performance Profiling</h3>
+            <p>Discuss frame budget, shader compilation, and DevTools tracing for large widget trees.</p>
+            <span class="topic-note">Pair with Module 6 for live demo ideas.</span>
+            <a class="topic-link" href="course-index.html">Optimize with Module 6 →</a>
+          </article>
+          <article class="important-card">
+            <div class="topic-icon">🌐</div>
+            <h3>Networking & Offline</h3>
+            <p>Explain REST + WebSocket patterns, Dio interceptors, caching, and offline sync strategies.</p>
+            <span class="topic-note">Review Module 3 + Module 4 practice prompts.</span>
+            <a class="topic-link" href="course-index.html">Data layer ideas →</a>
+          </article>
+          <article class="important-card">
+            <div class="topic-icon">♿</div>
+            <h3>Accessibility & Localization</h3>
+            <p>Cover semantics, large fonts, screen reader labels, and intl setup for multilingual apps.</p>
+            <span class="topic-note">Add these to your story-based answers.</span>
+            <a class="topic-link" href="course-index.html">Accessibility tips →</a>
+          </article>
+          <article class="important-card">
+            <div class="topic-icon">🚀</div>
+            <h3>Deployment & DevOps</h3>
+            <p>Walk through CI/CD setups, code signing, beta channels, and crash monitoring expectations.</p>
+            <span class="topic-note">Module 8 contains release checklists.</span>
+            <a class="topic-link" href="course-index.html">Ship with Module 8 →</a>
+          </article>
+        </div>
       </section>
     </main>
     
