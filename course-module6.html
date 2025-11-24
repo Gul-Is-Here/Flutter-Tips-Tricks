@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flutter Interview Course - Module 6: Performance & Optimization</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
+
+    :root {
+      --primary: #10b981;
+      --secondary: #0ea5e9;
+      --bg: #020617;
+      --panel: rgba(15, 23, 42, 0.95);
+      --muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.25);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Manrope', 'Inter', sans-serif;
+      background: radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.3), transparent 45%),
+                  radial-gradient(circle at 80% 0%, rgba(16, 185, 129, 0.25), transparent 40%),
+                  var(--bg);
+      color: #f8fafc;
+      padding: 40px 14px;
+      min-height: 100vh;
+    }
+
+    .shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 50px 120px rgba(2, 6, 23, 0.6);
+    }
+
+    header {
+      padding: 60px 40px;
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.35), rgba(16, 185, 129, 0.35));
+      text-align: center;
+    }
+
+    .module-pill {
+      display: inline-flex;
+      padding: 12px 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      margin-bottom: 18px;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    h1 { font-size: clamp(2.4rem, 4vw, 3.5rem); margin-bottom: 12px; }
+    .subtitle { color: var(--muted); line-height: 1.8; max-width: 780px; margin: 0 auto; }
+
+    .content { padding: 48px 40px 40px; background: var(--panel); }
+
+    .lesson-card {
+      margin-bottom: 50px;
+      padding: 32px;
+      border-radius: 24px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border);
+    }
+
+    .lesson-card h2 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .lesson-card span { color: var(--muted); }
+
+    .analogy-box {
+      margin-top: 20px;
+      padding: 24px;
+      border-radius: 18px;
+      display: flex;
+      gap: 16px;
+      border-left: 4px solid var(--primary);
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .analogy-box .emoji { font-size: 2.2rem; }
+    p { line-height: 1.75; color: var(--muted); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .grid-card {
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.6);
+    }
+
+    .code-block {
+      margin: 26px 0;
+      background: #010a1c;
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 24px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.93rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      color: #e2e8f0;
+    }
+
+    .code-comment { color: #475569; }
+    .code-keyword { color: #7dd3fc; }
+    .code-string { color: #f9a8d4; }
+
+    .checklist {
+      margin-top: 20px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .check-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .badge { color: var(--primary); }
+
+    .comparison-table {
+      width: 100%;
+      margin: 30px 0;
+      border-collapse: collapse;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .comparison-table th,
+    .comparison-table td { padding: 14px 18px; text-align: left; }
+
+    .comparison-table th { background: rgba(255, 255, 255, 0.04); }
+    .comparison-table tr + tr td { border-top: 1px solid rgba(255, 255, 255, 0.04); }
+
+    .callout {
+      margin: 20px 0;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(14, 165, 233, 0.4);
+      background: rgba(14, 165, 233, 0.1);
+      color: #bae6fd;
+    }
+
+    .interview-section {
+      margin-top: 20px;
+      padding: 28px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.7);
+    }
+
+    .interview-section h3 { font-size: 1.7rem; margin-bottom: 18px; }
+    .qa-item { margin-bottom: 16px; }
+    .question { color: var(--secondary); font-weight: 600; }
+
+    .navigation-buttons {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .nav-button {
+      padding: 14px 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-decoration: none;
+      color: #f8fafc;
+      background: linear-gradient(120deg, rgba(14, 165, 233, 0.25), rgba(16, 185, 129, 0.25));
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      header, .content { padding: 32px 20px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="module-pill">Module 6 of 8 · Performance & Optimization</div>
+      <h1>Keep Flutter Apps Smooth at 120 FPS</h1>
+      <p class="subtitle">Profiling, measuring, and eliminating jank with smart widget trees, efficient data pipelines, and the right DevTools workflow.</p>
+    </header>
+
+    <section class="content">
+      <article class="lesson-card" id="lesson1">
+        <h2>Lesson 6.1 · Widget Rebuild Strategy</h2>
+        <span>const constructors, Keys, selective rebuilds, memoization</span>
+        <div class="analogy-box">
+          <span class="emoji">🏗️</span>
+          <div>
+            <h3>Explain Like You're 5</h3>
+            <p>Imagine rebuilding a LEGO city every time one window changes color. Instead, label each building (Key) and only repaint that window. Flutter prefers surgical updates over bulldozing entire rows.</p>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="grid-card">
+            <h3>Const widgets</h3>
+            <p>Const constructors short-circuit rebuilds because Flutter reuses the existing widget instance.</p>
+          </div>
+          <div class="grid-card">
+            <h3>Keys</h3>
+            <p>Use <code>ValueKey</code> for semantic identity, <code>ObjectKey</code> for models, <code>UniqueKey</code> for forcing rebuilds.</p>
+          </div>
+          <div class="grid-card">
+            <h3>Split widgets</h3>
+            <p>Extract leaf widgets so only the smallest subtree rebuilds when a value changes.</p>
+          </div>
+        </div>
+        <div class="code-block">
+class ProductRow extends StatelessWidget {
+  const ProductRow({super.key, required this.product});
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(child: Text(product.name)),
+        PriceTag(price: product.price), // Separate widget
+      ],
+    );
+  }
+}
+
+class PriceTag extends StatelessWidget {
+  const PriceTag({super.key, required this.price});
+  final double price;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '\$${price.toStringAsFixed(2)}',
+      style: const TextStyle(fontFeatures: [FontFeature.tabularFigures()]),
+    );
+  }
+}
+        </div>
+        <div class="checklist">
+          <div class="check-item"><span class="badge">✓</span><p>Wrap expensive widgets with <code>const</code> where possible.</p></div>
+          <div class="check-item"><span class="badge">✓</span><p>Memoize selectors when using Provider/Bloc to avoid rebuild storms.</p></div>
+          <div class="check-item"><span class="badge">✓</span><p>Use <code>RepaintBoundary</code> around charts/maps to isolate GPU work.</p></div>
+        </div>
+      </article>
+
+      <article class="lesson-card" id="lesson2">
+        <h2>Lesson 6.2 · Data, Images & Memory</h2>
+        <span>Lazy builders, pagination, caching, image decoding, memory pressure</span>
+        <div class="analogy-box">
+          <span class="emoji">🚚</span>
+          <div>
+            <h3>Explain Like You're 5</h3>
+            <p>Instead of delivering every toy truck to the playground at once, you deliver just the ones kids are playing with. Builders and caches act like delivery schedules.</p>
+          </div>
+        </div>
+        <div class="code-block">
+class InfiniteList extends StatefulWidget {
+  const InfiniteList({super.key});
+
+  @override
+  State<InfiniteList> createState() => _InfiniteListState();
+}
+
+class _InfiniteListState extends State<InfiniteList> {
+  final PagingController<int, Article> paging =
+      PagingController(firstPageKey: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    paging.addPageRequestListener(_loadPage);
+  }
+
+  Future<void> _loadPage(int pageKey) async {
+    final newItems = await api.fetchArticles(pageKey);
+    final isLastPage = newItems.length < pageSize;
+    if (isLastPage) {
+      paging.appendLastPage(newItems);
+    } else {
+      paging.appendPage(newItems, pageKey + newItems.length);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PagedListView<int, Article>(
+      pagingController: paging,
+      builderDelegate: PagedChildBuilderDelegate(
+        itemBuilder: (_, item, __) => ArticleTile(item: item),
+      ),
+    );
+  }
+}
+        </div>
+        <div class="grid">
+          <div class="grid-card">
+            <h3>Image tips</h3>
+            <p>Use <code>cached_network_image</code>, specify <code>cacheWidth</code>, and prefer SVG for icons.</p>
+          </div>
+          <div class="grid-card">
+            <h3>Memory pressure</h3>
+            <p>Listen to <code>didHaveMemoryPressure</code> to drop caches. Monitor DevTools Memory tab.</p>
+          </div>
+          <div class="grid-card">
+            <h3>Background parsing</h3>
+            <p>Use <code>compute()</code> or <code>Isolate.run</code> for JSON so UI thread stays smooth.</p>
+          </div>
+        </div>
+        <div class="callout">
+          <strong>Remember:</strong> For photo feeds, decode thumbnails server-side to avoid decoding 12MP images on the device.
+        </div>
+      </article>
+
+      <article class="lesson-card" id="lesson3">
+        <h2>Lesson 6.3 · Profiling & DevTools</h2>
+        <span>Performance overlays, tracing, shader warmup, frame budget</span>
+        <div class="analogy-box">
+          <span class="emoji">📊</span>
+          <div>
+            <h3>Explain Like You're 5</h3>
+            <p>Profiling is like watching a heart monitor for your app. Spikes mean your app is stressed; smooth lines mean it is calm.</p>
+          </div>
+        </div>
+        <div class="comparison-table">
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Use Case</th>
+              <th>CLI Toggle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Performance overlay</td>
+              <td>Shows frame build/raster times</td>
+              <td><code>flutter run --profile --enable-performance-overlay</code></td>
+            </tr>
+            <tr>
+              <td>Flutter DevTools</td>
+              <td>CPU, memory, network tracing</td>
+              <td><code>flutter pub global run devtools</code></td>
+            </tr>
+            <tr>
+              <td>Shader warm-up</td>
+              <td>Precompile shaders to avoid first-frame jank</td>
+              <td><code>flutter run --bundle-sksl-path shaders.sksl.json</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="code-block">
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SkSLWarmUp().execute();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
+
+class SkSLWarmUp {
+  Future<void> execute() async {
+    final shaderBundle = await rootBundle.loadString('shaders.sksl.json');
+    final data = jsonDecode(shaderBundle) as Map<String, Object?>;
+    final engine = WidgetsBinding.instance.platformDispatcher;
+    await engine.setSkSLShaderBundle(data);
+  }
+}
+        </div>
+        <div class="checklist">
+          <div class="check-item"><span class="badge">✓</span><p>Record a Timeline trace while reproducing jank to capture slow frames.</p></div>
+          <div class="check-item"><span class="badge">✓</span><p>Profile in <strong>profile</strong> mode, not debug, to mirror release behavior.</p></div>
+          <div class="check-item"><span class="badge">✓</span><p>Watch for "Layout" vs "Build" vs "Raster" spikes to know whether CPU or GPU is stressed.</p></div>
+        </div>
+      </article>
+
+      <section class="interview-section">
+        <h3>🎯 Interview Drill</h3>
+        <div class="qa-item">
+          <p class="question">1. How do const widgets improve performance?</p>
+          <p>Flutter reuses const widget instances instead of rebuilding, reducing diffing work.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">2. When would you use RepaintBoundary?</p>
+          <p>Around complex visuals (maps, charts) so their repaint cost doesn't cascade to parents.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">3. How can you detect memory leaks?</p>
+          <p>Use DevTools memory tab, take heap snapshots, ensure streams/controllers are disposed.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">4. Explain shader compilation jank.</p>
+          <p>On first display, shaders compile on-device causing a hitch. Warm them up and bundle the SKSL.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">5. Difference between debug and profile mode?</p>
+          <p>Debug enables asserts/hot reload but isn't optimized; profile runs near-release performance with instrumentation.</p>
+        </div>
+      </section>
+
+      <div class="navigation-buttons">
+        <a class="nav-button" href="course-module5.html">← Module 5: Advanced Concepts</a>
+        <a class="nav-button" href="course-index.html">Back to Course Index</a>
+        <a class="nav-button" href="course-module7.html">Module 7: Testing →</a>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

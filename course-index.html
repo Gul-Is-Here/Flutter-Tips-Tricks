@@ -144,6 +144,7 @@
       border-radius: 20px;
       padding: 1px;
       background: linear-gradient(135deg, var(--primary), #667eea, var(--primary));
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
@@ -207,6 +208,23 @@
       margin: 15px 0 20px;
       font-size: 1.05rem;
     }
+
+    .module-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .meta-chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.85rem;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
     
     .topics-list {
       list-style: none;
@@ -269,14 +287,6 @@
     
     .module-button span { position: relative; z-index: 1; }
     
-    .module-card.coming-soon {
-      opacity: 0.6;
-    }
-    
-    .module-card.coming-soon .module-button {
-      background: linear-gradient(135deg, #888, #666);
-      cursor: not-allowed;
-    }
     
     .stats-section {
       display: grid;
@@ -398,6 +408,11 @@
             <h2>Flutter Fundamentals</h2>
           </div>
           <p>Build a strong foundation with Flutter basics, widgets, and Dart programming essentials.</p>
+          <div class="module-meta">
+            <span class="meta-chip">Level · Beginner</span>
+            <span class="meta-chip">Lessons · 3</span>
+            <span class="meta-chip">Practice · 12 demos</span>
+          </div>
           <ul class="topics-list">
             <li>Introduction to Flutter & Architecture</li>
             <li>Stateful vs Stateless Widgets</li>
@@ -406,18 +421,23 @@
             <li>Async Programming: Future & Streams</li>
           </ul>
           <a class="module-button" href="course-module1.html">
-            <span>Start Module 1</span>
+            <span>Open Module 1</span>
             <span>→</span>
           </a>
         </article>
         
         <!-- Module 2 -->
-        <article class="module-card coming-soon">
+        <article class="module-card">
           <div class="module-header">
             <div class="module-number">2</div>
             <h2>UI & Layouts</h2>
           </div>
           <p>Master Flutter's layout system and create beautiful, responsive user interfaces.</p>
+          <div class="module-meta">
+            <span class="meta-chip">Level · Beginner/Intermediate</span>
+            <span class="meta-chip">Lessons · 3</span>
+            <span class="meta-chip">Hands-on layout labs</span>
+          </div>
           <ul class="topics-list">
             <li>Row, Column & Stack Layouts</li>
             <li>MainAxis vs CrossAxis Alignment</li>
@@ -425,18 +445,24 @@
             <li>Material & Cupertino Design</li>
             <li>Custom Widgets & Composition</li>
           </ul>
-          <a class="module-button" href="#" onclick="return false;">
-            <span>Coming Soon</span>
+          <a class="module-button" href="course-module2.html">
+            <span>Open Module 2</span>
+            <span>→</span>
           </a>
         </article>
         
         <!-- Module 3 -->
-        <article class="module-card coming-soon">
+        <article class="module-card">
           <div class="module-header">
             <div class="module-number">3</div>
             <h2>State Management</h2>
           </div>
           <p>Learn different state management approaches from setState to advanced patterns.</p>
+          <div class="module-meta">
+            <span class="meta-chip">Level · Intermediate</span>
+            <span class="meta-chip">Lessons · 3</span>
+            <span class="meta-chip">Includes Provider & Bloc</span>
+          </div>
           <ul class="topics-list">
             <li>setState() & StatefulWidget</li>
             <li>InheritedWidget & InheritedModel</li>
@@ -444,18 +470,24 @@
             <li>Bloc/Cubit Architecture</li>
             <li>Riverpod & GetX</li>
           </ul>
-          <a class="module-button" href="#" onclick="return false;">
-            <span>Coming Soon</span>
+          <a class="module-button" href="course-module3.html">
+            <span>Open Module 3</span>
+            <span>→</span>
           </a>
         </article>
         
         <!-- Module 4 -->
-        <article class="module-card coming-soon">
+        <article class="module-card">
           <div class="module-header">
             <div class="module-number">4</div>
             <h2>Routing & Navigation</h2>
           </div>
           <p>Deep dive into Flutter's navigation system and routing strategies.</p>
+          <div class="module-meta">
+            <span class="meta-chip">Level · Intermediate</span>
+            <span class="meta-chip">Lessons · 3</span>
+            <span class="meta-chip">Navigator 1.0 & 2.0</span>
+          </div>
           <ul class="topics-list">
             <li>Navigator: push, pop, pushReplacement</li>
             <li>Named Routes & Route Generation</li>
@@ -463,18 +495,24 @@
             <li>Deep Linking</li>
             <li>Navigation 2.0 & Router</li>
           </ul>
-          <a class="module-button" href="#" onclick="return false;">
-            <span>Coming Soon</span>
+          <a class="module-button" href="course-module4.html">
+            <span>Open Module 4</span>
+            <span>→</span>
           </a>
         </article>
         
         <!-- Module 5 -->
-        <article class="module-card coming-soon">
+        <article class="module-card">
           <div class="module-header">
             <div class="module-number">5</div>
             <h2>Advanced Concepts</h2>
           </div>
           <p>Explore advanced Flutter features including animations and error handling.</p>
+          <div class="module-meta">
+            <span class="meta-chip">Level · Intermediate/Advanced</span>
+            <span class="meta-chip">Lessons · 3</span>
+            <span class="meta-chip">Lifecycle + Animations</span>
+          </div>
           <ul class="topics-list">
             <li>App Lifecycle Management</li>
             <li>Implicit & Explicit Animations</li>
@@ -482,18 +520,24 @@
             <li>Error Handling & Debugging</li>
             <li>Platform Channels</li>
           </ul>
-          <a class="module-button" href="#" onclick="return false;">
-            <span>Coming Soon</span>
+          <a class="module-button" href="course-module5.html">
+            <span>Open Module 5</span>
+            <span>→</span>
           </a>
         </article>
         
         <!-- Module 6 -->
-        <article class="module-card coming-soon">
+        <article class="module-card">
           <div class="module-header">
             <div class="module-number">6</div>
             <h2>Performance & Optimization</h2>
           </div>
           <p>Learn to build high-performance Flutter apps with optimization techniques.</p>
+          <div class="module-meta">
+            <span class="meta-chip">Level · Advanced</span>
+            <span class="meta-chip">Lessons · 3</span>
+            <span class="meta-chip">DevTools deep dives</span>
+          </div>
           <ul class="topics-list">
             <li>Widget Rebuild Optimization</li>
             <li>Lazy Loading & Pagination</li>
@@ -501,18 +545,24 @@
             <li>Memory Management</li>
             <li>Flutter DevTools</li>
           </ul>
-          <a class="module-button" href="#" onclick="return false;">
-            <span>Coming Soon</span>
+          <a class="module-button" href="course-module6.html">
+            <span>Open Module 6</span>
+            <span>→</span>
           </a>
         </article>
         
         <!-- Module 7 -->
-        <article class="module-card coming-soon">
+        <article class="module-card">
           <div class="module-header">
             <div class="module-number">7</div>
             <h2>Testing</h2>
           </div>
           <p>Write comprehensive tests to ensure your Flutter app quality and reliability.</p>
+          <div class="module-meta">
+            <span class="meta-chip">Level · Intermediate</span>
+            <span class="meta-chip">Lessons · 3</span>
+            <span class="meta-chip">Unit · Widget · E2E</span>
+          </div>
           <ul class="topics-list">
             <li>Unit Testing Basics</li>
             <li>Widget Testing</li>
@@ -520,18 +570,24 @@
             <li>Mocking with Mockito</li>
             <li>Test Coverage & CI/CD</li>
           </ul>
-          <a class="module-button" href="#" onclick="return false;">
-            <span>Coming Soon</span>
+          <a class="module-button" href="course-module7.html">
+            <span>Open Module 7</span>
+            <span>→</span>
           </a>
         </article>
         
         <!-- Module 8 -->
-        <article class="module-card coming-soon">
+        <article class="module-card">
           <div class="module-header">
             <div class="module-number">8</div>
             <h2>Deployment & Release</h2>
           </div>
           <p>Prepare and deploy your Flutter app to production on multiple platforms.</p>
+          <div class="module-meta">
+            <span class="meta-chip">Level · Advanced</span>
+            <span class="meta-chip">Lessons · 3</span>
+            <span class="meta-chip">CI/CD ready</span>
+          </div>
           <ul class="topics-list">
             <li>Building for Production</li>
             <li>App Signing & Security</li>
@@ -539,8 +595,9 @@
             <li>Continuous Integration</li>
             <li>Version Management</li>
           </ul>
-          <a class="module-button" href="#" onclick="return false;">
-            <span>Coming Soon</span>
+          <a class="module-button" href="course-module8.html">
+            <span>Open Module 8</span>
+            <span>→</span>
           </a>
         </article>
         

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flutter Interview Course - Module 7: Testing</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    :root {
+      --primary: #38bdf8;
+      --secondary: #f472b6;
+      --accent: #c084fc;
+      --bg: #020617;
+      --panel: rgba(15, 23, 42, 0.95);
+      --border: rgba(255,255,255,0.08);
+      --muted: #94a3b8;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', 'Inter', sans-serif;
+      background: linear-gradient(145deg, rgba(56, 189, 248, 0.25), transparent 60%),
+                  radial-gradient(circle at 75% 15%, rgba(244, 114, 182, 0.25), transparent 35%),
+                  var(--bg);
+      color: #f8fafc;
+      padding: 40px 16px;
+    }
+
+    .wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      border-radius: 32px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 45px 120px rgba(2, 6, 23, 0.65);
+    }
+
+    header {
+      padding: 60px 42px;
+      text-align: center;
+      background: linear-gradient(115deg, rgba(56, 189, 248, 0.35), rgba(192, 132, 252, 0.35));
+    }
+
+    .module-pill {
+      display: inline-flex;
+      padding: 12px 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.35);
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    h1 { font-size: clamp(2.4rem, 4vw, 3.6rem); margin-bottom: 12px; }
+    .subtitle { max-width: 820px; margin: 0 auto; line-height: 1.8; color: var(--muted); }
+
+    main { background: var(--panel); padding: 48px 42px 40px; }
+
+    .lesson-section {
+      margin-bottom: 52px;
+      padding: 32px;
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.6);
+    }
+
+    .lesson-section h2 { font-size: 2rem; margin-bottom: 8px; }
+    .lesson-section span { color: var(--muted); }
+
+    .analogy-box {
+      margin-top: 18px;
+      padding: 24px;
+      border-radius: 20px;
+      border-left: 4px solid var(--primary);
+      background: rgba(56, 189, 248, 0.08);
+      display: flex;
+      gap: 18px;
+    }
+
+    .analogy-box .emoji { font-size: 2.3rem; }
+
+    p { color: var(--muted); line-height: 1.75; }
+
+    .steps-grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .step-card {
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(2, 6, 23, 0.6);
+    }
+
+    .code-block {
+      margin: 26px 0;
+      padding: 24px;
+      border-radius: 20px;
+      background: #010a1c;
+      border: 1px solid rgba(255,255,255,0.05);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      color: #e2e8f0;
+    }
+
+    .code-comment { color: #475569; }
+
+    .callout {
+      margin: 18px 0;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(244, 114, 182, 0.4);
+      background: rgba(244, 114, 182, 0.12);
+      color: #fbcfe8;
+    }
+
+    .table-wrapper { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    th, td { padding: 16px; text-align: left; }
+    th { background: rgba(255,255,255,0.04); }
+    tr + tr td { border-top: 1px solid rgba(255,255,255,0.06); }
+
+    .interview-section {
+      padding: 32px;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .interview-section h3 { font-size: 1.7rem; margin-bottom: 16px; }
+    .qa-item { margin-bottom: 14px; }
+    .question { color: var(--secondary); font-weight: 600; }
+
+    .navigation-buttons {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
+    }
+
+    .nav-button {
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-decoration: none;
+      color: #f8fafc;
+      background: linear-gradient(120deg, rgba(56, 189, 248, 0.25), rgba(244, 114, 182, 0.25));
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      header, main { padding: 32px 20px; }
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="module-pill">Module 7 of 8 · Testing</div>
+      <h1>Trust Your Flutter App with Tests</h1>
+      <p class="subtitle">Learn how to protect business logic with unit tests, verify UI with widget tests, and simulate real devices with integration tests plus mocking techniques.</p>
+    </header>
+
+    <main>
+      <section class="lesson-section" id="lesson1">
+        <h2>Lesson 7.1 · Unit Testing Foundations</h2>
+        <span>Arrange-Act-Assert, matchers, test groups, fake datasources</span>
+        <div class="analogy-box">
+          <span class="emoji">🔬</span>
+          <div>
+            <h3>Explain Like You're 5</h3>
+            <p>Unit tests are like checking each LEGO piece before building the castle. If one brick is cracked, you fix it before stacking everything else.</p>
+          </div>
+        </div>
+        <div class="steps-grid">
+          <article class="step-card">
+            <h3>Arrange</h3>
+            <p>Setup dependencies, fakes, and input data.</p>
+          </article>
+          <article class="step-card">
+            <h3>Act</h3>
+            <p>Call the method you're testing.</p>
+          </article>
+          <article class="step-card">
+            <h3>Assert</h3>
+            <p>Verify outputs with <code>expect</code> matchers.</p>
+          </article>
+        </div>
+        <div class="code-block">
+import 'package:flutter_test/flutter_test.dart';
+import 'package:price_calculator/price_service.dart';
+
+void main() {
+  group('PriceService', () {
+    test('applies weekend discount', () {
+      final service = PriceService();
+
+      final total = service.total(
+        subtotal: 100,
+        isWeekend: true,
+      );
+
+      expect(total, equals(90));
+    });
+
+    test('throws when subtotal negative', () {
+      final service = PriceService();
+
+      expect(
+        () => service.total(subtotal: -5, isWeekend: false),
+        throwsA(isA<ArgumentError>()),
+      );
+    });
+  });
+}
+        </div>
+        <div class="callout">
+          <strong>Tip:</strong> Keep unit tests in <code>test/</code>, mirror the lib structure, and run with <code>flutter test</code> in under 5 seconds for fast feedback.
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson2">
+        <h2>Lesson 7.2 · Widget Testing</h2>
+        <span>WidgetTester APIs, pumps, finders, semantics, golden tests</span>
+        <div class="analogy-box">
+          <span class="emoji">🎨</span>
+          <div>
+            <h3>Explain Like You're 5</h3>
+            <p>Widget tests are like dress rehearsals on a miniature stage. You simulate taps, scrolls, and check what appears without launching the full app.</p>
+          </div>
+        </div>
+        <div class="code-block">
+import 'package:flutter_test/flutter_test.dart';
+import 'package:todo_app/todo_list.dart';
+
+void main() {
+  testWidgets('adds a todo item', (tester) async {
+    await tester.pumpWidget(const TodoApp());
+
+    await tester.enterText(find.byType(TextField), 'Buy milk');
+    await tester.tap(find.text('Add'));
+    await tester.pump(); // rebuild with new state
+
+    expect(find.text('Buy milk'), findsOneWidget);
+  });
+
+  testWidgets('checkbox toggles', (tester) async {
+    await tester.pumpWidget(const TodoApp());
+
+    final checkbox = find.byType(Checkbox).first;
+    await tester.tap(checkbox);
+    await tester.pumpAndSettle();
+
+    expect(
+      tester.widget<Checkbox>(checkbox).value,
+      isTrue,
+    );
+  });
+}
+        </div>
+        <div class="steps-grid">
+          <article class="step-card">
+            <h3>Finders</h3>
+            <p><code>find.text</code>, <code>find.byType</code>, <code>find.byKey</code></p>
+          </article>
+          <article class="step-card">
+            <h3>Interactions</h3>
+            <p><code>tap</code>, <code>drag</code>, <code>enterText</code>, <code>pump</code>, <code>pumpAndSettle</code></p>
+          </article>
+          <article class="step-card">
+            <h3>Golden tests</h3>
+            <p>Compare widget screenshots to reference PNGs for visual regressions.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="lesson-section" id="lesson3">
+        <h2>Lesson 7.3 · Integration & Mocking</h2>
+        <span>Integration_test package, mockito, fake HTTP, CI automation</span>
+        <div class="analogy-box">
+          <span class="emoji">🛰️</span>
+          <div>
+            <h3>Explain Like You're 5</h3>
+            <p>Integration tests are like taking the whole robot outside and seeing if it can deliver a package. You test everything together, not just individual gears.</p>
+          </div>
+        </div>
+        <div class="code-block">
+import 'package:integration_test/integration_test.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:shop_app/main.dart' as app;
+
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('checkout flow works', (tester) async {
+    app.main();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Add to cart').first);
+    await tester.tap(find.byIcon(Icons.shopping_cart));
+    await tester.tap(find.text('Checkout'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Order confirmed'), findsOneWidget);
+  });
+}
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Layer</th>
+                <th>Tool</th>
+                <th>Runtime</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Logic</td>
+                <td><code>flutter test</code></td>
+                <td>Milliseconds</td>
+                <td>Pure Dart unit tests</td>
+              </tr>
+              <tr>
+                <td>UI</td>
+                <td><code>flutter test</code></td>
+                <td>~1 sec/widget</td>
+                <td>Widget tests headless</td>
+              </tr>
+              <tr>
+                <td>End-to-End</td>
+                <td><code>integration_test</code></td>
+                <td>Minutes</td>
+                <td>Full app on device/emulator</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>Mocking Cheat:</strong> Use <code>Mocktail</code> or <code>Mockito</code> to stub repositories. Prefer <em>fakes</em> (in-memory implementations) when behavior is simple.
+        </div>
+      </section>
+
+      <section class="interview-section">
+        <h3>🎯 Interview Drill</h3>
+        <div class="qa-item">
+          <p class="question">1. Difference between widget and integration tests?</p>
+          <p>Widget tests run inside Flutter's test harness without real devices; integration tests spin up the actual app on a device/emulator.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">2. How do you mock HTTP requests?</p>
+          <p>Inject a custom <code>http.Client</code>, use <code>MockClient</code> from <code>http/testing.dart</code> or Mocktail to intercept calls.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">3. Why use golden tests?</p>
+          <p>They detect visual regressions by diffing screenshots pixel-by-pixel.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">4. What is pumpAndSettle?</p>
+          <p>It keeps pumping frames until the Widget tree is idle—handy after animations or navigation.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">5. How to run integration tests in CI?</p>
+          <p>Use <code>flutter test integration_test</code> with <code>--device-id</code> or <code>flutter drive</code>, ensure emulators/simulators are booted.</p>
+        </div>
+      </section>
+
+      <div class="navigation-buttons">
+        <a class="nav-button" href="course-module6.html">← Module 6: Performance</a>
+        <a class="nav-button" href="course-index.html">Back to Course Index</a>
+        <a class="nav-button" href="course-module8.html">Module 8: Deployment & Release →</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

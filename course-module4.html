@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flutter Interview Course - Module 4: Routing & Navigation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+    :root {
+      --primary: #00DE8E;
+      --purple: #7F5AF0;
+      --pink: #FF7AC6;
+      --dark: #0f172a;
+      --muted: #94a3b8;
+      --card: rgba(15, 23, 42, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, rgba(0, 222, 142, 0.15), transparent 45%),
+                  radial-gradient(circle at 20% 20%, rgba(127, 90, 240, 0.25), transparent 40%),
+                  #05070e;
+      color: #f1f5f9;
+      min-height: 100vh;
+      padding: 40px 16px;
+    }
+
+    .course-shell {
+      max-width: 1100px;
+      margin: 0 auto 60px;
+      border-radius: 32px;
+      background: rgba(2, 6, 23, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 40px 80px rgba(2, 6, 23, 0.6);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 60px 40px;
+      text-align: center;
+      background: radial-gradient(circle at top right, rgba(255, 122, 198, 0.4), transparent 40%),
+                  radial-gradient(circle at bottom left, rgba(0, 222, 142, 0.4), transparent 45%),
+                  #0b1120;
+      position: relative;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 70%);
+      mix-blend-mode: screen;
+      opacity: 0.5;
+    }
+
+    header h1 {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    header p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 760px;
+      margin: 0 auto 24px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+
+    .module-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quick-stats {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-card {
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+
+    .stat-card span {
+      display: block;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .content {
+      padding: 60px 40px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+
+    .lesson-divider {
+      padding: 32px;
+      border-radius: 24px;
+      background: linear-gradient(115deg, rgba(0, 222, 142, 0.15), rgba(127, 90, 240, 0.15));
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .lesson-divider h2 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .lesson-divider span {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .analogy-box {
+      margin-top: 24px;
+      padding: 24px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 4px solid var(--primary);
+      display: flex;
+      gap: 16px;
+    }
+
+    .analogy-emoji {
+      font-size: 2rem;
+    }
+
+    .concept-grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .concept-card {
+      padding: 24px;
+      border-radius: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      min-height: 180px;
+    }
+
+    h3 { margin-bottom: 12px; font-size: 1.4rem; color: #fff; }
+    p { color: var(--muted); line-height: 1.8; }
+
+    .code-block {
+      background: #0f172a;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 16px;
+      padding: 24px;
+      font-family: 'Fira Code', 'Source Code Pro', monospace;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      color: #e2e8f0;
+      margin: 24px 0;
+    }
+
+    .code-comment { color: #94a3b8; }
+    .code-keyword { color: #7dd3fc; }
+    .code-string { color: #f9a8d4; }
+    .code-number { color: #facc15; }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 30px 0;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .comparison-table th {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 16px;
+      text-align: left;
+      font-size: 1rem;
+    }
+
+    .comparison-table td {
+      padding: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+    }
+
+    .tip-card {
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(0, 222, 142, 0.1);
+      border: 1px solid rgba(0, 222, 142, 0.3);
+      color: #d1fae5;
+    }
+
+    .interview-section {
+      padding: 30px;
+      border-radius: 24px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      margin-top: 30px;
+    }
+
+    .interview-section h3 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+
+    .qa-item { margin-bottom: 18px; }
+    .question { color: var(--pink); font-weight: 600; }
+
+    .navigation-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .nav-button {
+      padding: 14px 26px;
+      border-radius: 999px;
+      background: linear-gradient(120deg, rgba(0, 222, 142, 0.2), rgba(127, 90, 240, 0.2));
+      color: #fff;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      font-weight: 600;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-button:hover { transform: translateY(-2px); }
+
+    @media (max-width: 768px) {
+      header, .content { padding: 32px 20px; }
+      .concept-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="course-shell">
+    <header>
+      <div class="module-pill">Module 4 of 8 · Routing & Navigation</div>
+      <h1>Guide Users Through Your Flutter Worlds</h1>
+      <p>Navigation determines how users move between stories in your app. In this module you will master Navigator APIs, named routes, Navigation 2.0, deep links, and nested flows so your app always knows where to go and how to get back safely.</p>
+      <div class="quick-stats">
+        <div class="stat-card"><span>3</span>Hands-on lessons</div>
+        <div class="stat-card"><span>9</span>Code walkthroughs</div>
+        <div class="stat-card"><span>8</span>Interview prompts</div>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="lesson-divider" id="lesson1">
+        <h2>Lesson 4.1 · Imperative Navigation</h2>
+        <span>Navigator stack, push/pop/pushReplacement, passing and returning data</span>
+        <div class="analogy-box">
+          <div class="analogy-emoji">📚</div>
+          <div>
+            <h3>Explain Like You're 5</h3>
+            <p>Think of your app as a magical storybook. Every time you call <strong>Navigator.push</strong>, you're placing a new chapter on top of the stack. <strong>Navigator.pop</strong> removes the top chapter so you can re-read the previous one. The bookmark (Route) remembers where to return when you're done.</p>
+          </div>
+        </div>
+        <div class="concept-grid">
+          <article class="concept-card">
+            <h3>Navigator.push</h3>
+            <p>Creates a <em>MaterialPageRoute</em> (or custom Route) and adds it to the stack. Flutter rebuilds the new screen while keeping previous ones alive underneath.</p>
+          </article>
+          <article class="concept-card">
+            <h3>Navigator.pop</h3>
+            <p>Removes the current route. Optionally returns a value which the previous screen awaits using <code>await Navigator.push</code>.</p>
+          </article>
+          <article class="concept-card">
+            <h3>pushReplacement & pushAndRemoveUntil</h3>
+            <p>Swap the current route or clear parts of the stack to prevent users from navigating back to certain screens (e.g., after login).</p>
+          </article>
+        </div>
+        <div class="code-block">
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => const ProfileScreen(),
+  ),
+);
+
+final result = await Navigator.push<String>(
+  context,
+  MaterialPageRoute(
+    builder: (_) => const ColorPickerScreen(),
+  ),
+);
+
+if (result != null) {
+  setState(() => _favoriteColor = result);
+}
+
+Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (_) => const Dashboard()),
+);
+
+Navigator.pushAndRemoveUntil(
+  context,
+  MaterialPageRoute(builder: (_) => const HomeScreen()),
+  (route) => route.settings.name == '/login',
+);
+        </div>
+        <div class="tip-card">
+          <strong>Interview Tip:</strong> Explain how navigating inside async methods requires checking <code>context.mounted</code> in Flutter 3+ so you avoid calling Navigator after the widget is disposed.
+        </div>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Recommended API</th>
+              <th>Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Standard forward navigation</td>
+              <td><code>Navigator.push</code></td>
+              <td>Preserves history so users can go back.</td>
+            </tr>
+            <tr>
+              <td>Replace login screen with dashboard</td>
+              <td><code>pushReplacement</code></td>
+              <td>Prevents returning to login with back button.</td>
+            </tr>
+            <tr>
+              <td>Clear stack after checkout</td>
+              <td><code>pushAndRemoveUntil</code></td>
+              <td>Prunes previous routes to avoid duplicate orders.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="lesson-divider" id="lesson2">
+        <h2>Lesson 4.2 · Named Routes & Route Guards</h2>
+        <span>Centralized route tables, arguments, and pre-navigation checks</span>
+        <div class="analogy-box">
+          <div class="analogy-emoji">🗺️</div>
+          <div>
+            <h3>Explain Like You're 5</h3>
+            <p>Named routes are like giving every room in a museum a label. Instead of saying “go through the third door on the left,” you say “go to Room Dinos.” Maps are easier to follow than step-by-step instructions.</p>
+          </div>
+        </div>
+        <div class="code-block">
+return MaterialApp(
+  initialRoute: '/',
+  routes: {
+    '/': (context) => const HomeScreen(),
+    '/details': (context) => const DetailsScreen(),
+  },
+  onGenerateRoute: (settings) {
+    if (settings.name == '/profile') {
+      final userId = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (_) => ProfileScreen(userId: userId),
+      );
+    }
+    return null; // Falls through to onUnknownRoute
+  },
+  onUnknownRoute: (_) => MaterialPageRoute(
+    builder: (_) => const NotFoundScreen(),
+  ),
+);
+
+Navigator.pushNamed(
+  context,
+  '/profile',
+  arguments: 'user-42',
+);
+        </div>
+        <div class="concept-grid">
+          <article class="concept-card">
+            <h3>Centralized routing</h3>
+            <p>Keep all pages in one file for easier audits and analytics. Add route guards to restrict access (e.g., check auth token before returning a route).</p>
+          </article>
+          <article class="concept-card">
+            <h3>Deep links</h3>
+            <p>Use <code>onGenerateInitialRoutes</code> or the new <code>RouteInformationParser</code> to translate incoming URLs into stack states. Perfect for marketing campaigns.</p>
+          </article>
+          <article class="concept-card">
+            <h3>Hero animations</h3>
+            <p>Named routes still support Hero tags. Ensure hero names are unique per stack to avoid conflicts.</p>
+          </article>
+        </div>
+        <div class="tip-card">
+          <strong>Security Reminder:</strong> Never trust incoming route arguments blindly. Validate IDs, sanitize strings, and consider using strongly typed navigation helpers.
+        </div>
+      </section>
+
+      <section class="lesson-divider" id="lesson3">
+        <h2>Lesson 4.3 · Navigation 2.0 & Nested Flows</h2>
+        <span>Declarative Router API, BottomNav stacks, deep linking, and URL syncing</span>
+        <div class="analogy-box">
+          <div class="analogy-emoji">🧭</div>
+          <div>
+            <h3>Explain Like You're 5</h3>
+            <p>Navigation 1.0 is like telling a friend “walk forward, then turn left.” Navigation 2.0 is drawing the entire map and letting Flutter pick the steps. You describe the destination state instead of pushing instructions.</p>
+          </div>
+        </div>
+        <div class="code-block">
+class AppRouterDelegate extends RouterDelegate<AppRoute>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<AppRoute> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  AppPage currentPage = AppPage.home;
+
+  @override
+  Widget build(BuildContext context) {
+    final pages = <Page<dynamic>>[
+      MaterialPage(child: HomeScreen(onOpenDetails: _handleDetails)),
+      if (currentPage == AppPage.details)
+        const MaterialPage(child: DetailsScreen()),
+    ];
+
+    return Navigator(
+      key: navigatorKey,
+      pages: pages,
+      onPopPage: (route, result) {
+        if (!route.didPop(result)) return false;
+        currentPage = AppPage.home;
+        notifyListeners();
+        return true;
+      },
+    );
+  }
+}
+        </div>
+        <div class="concept-grid">
+          <article class="concept-card">
+            <h3>Why Navigation 2.0?</h3>
+            <p>Web-style URLs, state restoration, and nested flows (tabs, wizards) are easier when the entire stack is described declaratively.</p>
+          </article>
+          <article class="concept-card">
+            <h3>Bottom navigation stacks</h3>
+            <p>Give every tab its own <code>Navigator</code> inside a <code>IndexedStack</code> so switching tabs preserves scroll positions.</p>
+          </article>
+          <article class="concept-card">
+            <h3>Route-aware widgets</h3>
+            <p>Use <code>RouteObserver</code> to know when analytics pages become visible. Essential for conversion funnels.</p>
+          </article>
+        </div>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Navigation 1.0</th>
+              <th>Navigation 2.0</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>API style</td>
+              <td>Imperative push/pop</td>
+              <td>Declarative page list</td>
+            </tr>
+            <tr>
+              <td>URL synchronization</td>
+              <td>Manual</td>
+              <td>Built-in through Router</td>
+            </tr>
+            <tr>
+              <td>Multiple stacks</td>
+              <td>Workarounds with GlobalKeys</td>
+              <td>Native using nested Navigators</td>
+            </tr>
+            <tr>
+              <td>Learning curve</td>
+              <td>Lower</td>
+              <td>Higher but future-proof</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="tip-card">
+          <strong>Pro Workflow:</strong> Start with Navigation 1.0 for MVP speed, then abstract navigation into a service. Moving to Router API later becomes a recursive refactor instead of a rewrite.
+        </div>
+      </section>
+
+      <section class="interview-section">
+        <h3>🎯 Interview Drill</h3>
+        <div class="qa-item">
+          <p class="question">Q1. How do you return data when popping a route?</p>
+          <p>A: Await <code>Navigator.push</code> and pass the value to <code>Navigator.pop(context, value)</code>. The awaiting screen receives the result after the new route is removed.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">Q2. Why would you prefer <code>pushReplacement</code> over <code>push</code>?</p>
+          <p>A: When you don't want the user returning to the previous screen (e.g., splash → home, auth → dashboard). Replacement keeps memory low and history clean.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">Q3. How do you guard routes that require authentication?</p>
+          <p>A: In <code>onGenerateRoute</code>, check auth state before returning a route. Redirect unauthorized users to login and optionally attach the intended route for after-login navigation.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">Q4. Explain the benefit of nested Navigators in tab bars.</p>
+          <p>A: Each tab maintains its own navigation stack, so switching tabs doesn't lose scroll position or internal state. Improves UX for marketplace apps.</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">Q5. When should you reach for Navigation 2.0?</p>
+          <p>A: When you need deep linking, state restoration, or complex flows that depend on the entire stack state (e.g., e-commerce checkout, multi-step onboarding).</p>
+        </div>
+        <div class="qa-item">
+          <p class="question">Q6. How can you observe route transitions?</p>
+          <p>A: Add a <code>RouteObserver<PageRoute></code> to <code>MaterialApp</code> and have widgets mix in <code>RouteAware</code>. Useful for analytics and pausing media.</p>
+        </div>
+      </section>
+
+      <div class="navigation-buttons">
+        <a class="nav-button" href="course-module3.html">← Module 3: State Management</a>
+        <a class="nav-button" href="course-index.html">Back to Course Index</a>
+        <a class="nav-button" href="course-module5.html">Module 5: Advanced Concepts →</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
