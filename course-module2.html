@@ -4,377 +4,336 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flutter Interview Course - Module 2: UI & Layouts</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.8;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
-            color: #2c3e50;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            overflow: hidden;
-            animation: fadeIn 0.8s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .course-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .course-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .course-header h1 {
-            color: white;
-            font-size: 3.5em;
-            margin-bottom: 15px;
-            font-weight: 800;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
-        }
-        
-        .course-header p {
-            font-size: 1.4em;
-            opacity: 0.95;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .module-badge {
-            background: linear-gradient(135deg, #ff9a56, #ff6b6b);
-            color: white;
-            padding: 15px 35px;
-            border-radius: 30px;
-            display: inline-block;
-            font-weight: 700;
-            margin: 25px 0;
-            font-size: 1.3em;
-            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
-            position: relative;
-            z-index: 1;
-        }
-        
-        .content {
-            padding: 50px;
-        }
-        
-        .lesson-divider {
-            background: linear-gradient(135deg, #00c9ff, #92fe9d);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin: 50px 0 40px 0;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,201,255,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .lesson-divider::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, white, transparent);
-        }
-        
-        .lesson-divider h2 {
-            color: white;
-            border: none;
-            padding: 0;
-            margin: 0;
-            font-size: 2.5em;
-            font-weight: 800;
-        }
-        
-        .analogy-box {
-            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            border-left: 6px solid #ff9800;
-            box-shadow: 0 5px 20px rgba(255,152,0,0.2);
-            display: flex;
-            gap: 20px;
-            align-items: start;
-        }
-        
-        .analogy-emoji {
-            font-size: 3.5em;
-            line-height: 1;
-        }
-        
-        .analogy-box h3 {
-            color: #e65100;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-        }
-        
-        .analogy-box p {
-            color: #5d4037;
-            font-size: 1.15em;
-            line-height: 1.8;
-        }
-        
-        h2 {
-            color: #667eea;
-            font-size: 2.3em;
-            margin-top: 40px;
-            border-left: 6px solid #667eea;
-            padding-left: 20px;
-            font-weight: 700;
-        }
-        
-        h3 {
-            color: #e74c3c;
-            font-size: 1.9em;
-            margin-top: 35px;
-            font-weight: 700;
-        }
-        
-        h4 {
-            color: #27ae60;
-            font-size: 1.5em;
-            margin-top: 25px;
-            font-weight: 600;
-        }
-        
-        p, li {
-            font-size: 1.1em;
-            margin: 15px 0;
-            color: #34495e;
-        }
-        
-        ul, ol {
-            margin: 20px 0;
-            padding-left: 30px;
-        }
-        
-        li {
-            margin: 12px 0;
-            padding-left: 10px;
-        }
-        
-        pre {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 25px;
-            border-radius: 12px;
-            overflow-x: auto;
-            margin: 25px 0;
-            border: 1px solid #333;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-        
-        code {
-            font-family: 'Courier New', monospace;
-            font-size: 0.95em;
-            line-height: 1.6;
-        }
-        
-        .tip-box {
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-            border-left: 6px solid #2196f3;
-            padding: 25px;
-            margin: 25px 0;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(33,150,243,0.2);
-        }
-        
-        .tip-box h4 {
-            color: #1565c0;
-            margin-top: 0;
-            font-size: 1.4em;
-        }
-        
-        .warning-box {
-            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
-            border-left: 6px solid #ff9800;
-            padding: 25px;
-            margin: 25px 0;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(255,152,0,0.2);
-        }
-        
-        .warning-box h4 {
-            color: #e65100;
-            margin-top: 0;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 30px 0;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        th {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 18px;
-            text-align: left;
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-        
-        td {
-            padding: 18px;
-            border-bottom: 1px solid #e0e0e0;
-            background: white;
-        }
-        
-        tr:hover td {
-            background: #f5f5f5;
-            transition: background 0.3s ease;
-        }
-        
-        .code-inline {
-            background: #f4f4f4;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-            color: #c7254e;
-            font-size: 0.95em;
-        }
-        
-        .interview-section {
-            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
-            padding: 35px;
-            border-radius: 15px;
-            margin: 40px 0;
-            border-left: 6px solid #9c27b0;
-            box-shadow: 0 5px 20px rgba(156,39,176,0.2);
-        }
-        
-        .interview-section h3 {
-            color: #6a1b9a;
-            margin-top: 0;
-            font-size: 2em;
-        }
-        
-        .interview-qa {
-            margin: 25px 0;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-        
-        .question {
-            font-weight: 700;
-            color: #7b1fa2;
-            font-size: 1.2em;
-            margin-bottom: 12px;
-        }
-        
-        .answer {
-            color: #4a148c;
-            font-size: 1.05em;
-            line-height: 1.8;
-        }
-        
-        .navigation-buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin: 50px 0;
-            flex-wrap: wrap;
-        }
-        
-        .nav-button {
-            flex: 1;
-            min-width: 200px;
-            padding: 18px 30px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(102,126,234,0.3);
-        }
-        
-        .nav-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102,126,234,0.5);
-        }
-        
-        .nav-button.prev {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-        }
-        
-        .nav-button.next {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-        }
-        
-        footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 30px;
-            font-size: 1.1em;
-        }
-        
-        .emoji-large {
-            font-size: 1.5em;
-            margin-right: 10px;
-        }
-        
-        @media (max-width: 768px) {
-            .course-header h1 { font-size: 2.5em; }
-            .content { padding: 30px 20px; }
-            .analogy-box { flex-direction: column; text-align: center; }
-            .navigation-buttons { flex-direction: column; }
-            .nav-button { min-width: 100%; }
-        }
-    </style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    :root {
+      --primary: #00FFA3;
+      --primary-dark: #001910;
+      --accent: #00C67F;
+      --bg: #010807;
+      --card-bg: rgba(2, 10, 8, 0.95);
+      --card-soft: linear-gradient(135deg, rgba(0, 255, 163, 0.09), rgba(0, 0, 0, 0.85));
+      --border: rgba(0, 255, 163, 0.25);
+      --text: #E8FFF5;
+      --text-dim: #9ed7be;
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+      --code-bg: #031611;
+      --code-border: rgba(0, 255, 163, 0.2);
+      --brand-gradient: linear-gradient(135deg, #00FFA3 0%, #000000 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.8;
+      background: radial-gradient(circle at top, rgba(0, 255, 163, 0.18), transparent 45%),
+            radial-gradient(circle at 80% 20%, rgba(0, 255, 163, 0.12), transparent 60%),
+            linear-gradient(135deg, #000000 0%, #020c08 55%, #000000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 30px 18px 60px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 80%, rgba(0, 255, 163, 0.18), transparent 55%);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1150px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .course-header {
+      background: var(--brand-gradient);
+      color: var(--text);
+      padding: 70px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .course-header::before {
+      content: '';
+      position: absolute;
+      inset: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      opacity: 0.6;
+    }
+
+    .course-header h1 {
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      margin-bottom: 18px;
+      letter-spacing: 0.01em;
+    }
+
+    .course-header p {
+      font-size: 1.35rem;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 700px;
+      margin: 0 auto 20px;
+    }
+
+    .module-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 32px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .content {
+      padding: 52px 60px;
+    }
+
+    .lesson-divider {
+      background: linear-gradient(120deg, rgba(0, 255, 163, 0.25), rgba(0, 0, 0, 0.85));
+      color: var(--text);
+      padding: 30px;
+      border-radius: 20px;
+      margin: 55px 0 45px;
+      text-align: center;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lesson-divider::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      width: 40%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    }
+
+    .lesson-divider h2 {
+      border: none;
+      padding: 0;
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 2.4rem);
+      font-weight: 800;
+    }
+
+    h2 {
+      color: var(--text);
+      font-size: 2.2rem;
+      margin-top: 42px;
+      border-left: 7px solid var(--primary);
+      padding-left: 20px;
+    }
+
+    h3 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-top: 35px;
+    }
+
+    h4 {
+      color: var(--text-dim);
+      font-size: 1.4rem;
+      margin-top: 25px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    p, li {
+      font-size: 1.08rem;
+      margin: 15px 0;
+      color: var(--text-dim);
+    }
+
+    ul, ol { padding-left: 32px; }
+    li { margin: 10px 0; }
+
+    .analogy-box,
+    .tip-box,
+    .warning-box,
+    .interview-section {
+      background: var(--card-soft);
+      border-radius: 20px;
+      padding: 28px;
+      margin: 30px 0;
+      border: 1px solid var(--border);
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    .analogy-box { display: flex; gap: 22px; align-items: flex-start; border-left: 6px solid #FDD835; }
+    .analogy-emoji { font-size: 3.2rem; }
+    .tip-box { border-left: 6px solid var(--primary); }
+    .warning-box { border-left: 6px solid #FF8A65; }
+    .interview-section { border-left: 6px solid #AB47BC; }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--text);
+      padding: 26px;
+      border-radius: 16px;
+      border: 1px solid var(--code-border);
+      margin: 28px 0;
+      overflow-x: auto;
+      box-shadow: inset 0 0 30px rgba(0, 255, 163, 0.08);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.96em;
+      line-height: 1.7;
+    }
+
+    .code-inline {
+      background: rgba(0, 255, 163, 0.1);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      color: var(--primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 32px 0;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    th {
+      background: var(--brand-gradient);
+      color: var(--text);
+      padding: 18px;
+      text-align: left;
+      letter-spacing: 0.08em;
+    }
+
+    td {
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--text-dim);
+    }
+
+    tr:nth-child(even) td { background: rgba(0, 255, 163, 0.04); }
+    tr:hover td { background: rgba(0, 255, 163, 0.08); transition: background 0.3s ease; }
+
+    .interview-qa {
+      margin: 25px 0;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 24px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .question {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+    }
+
+    .answer { color: var(--text-dim); }
+
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 55px 0 35px;
+      flex-wrap: wrap;
+    }
+
+    .nav-button {
+      flex: 1;
+      min-width: 220px;
+      padding: 18px 32px;
+      border-radius: 16px;
+      text-decoration: none;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      background: var(--brand-gradient);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .nav-button.prev { background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 255, 163, 0.28)); }
+    .nav-button.next { background: linear-gradient(135deg, rgba(0, 255, 163, 0.32), rgba(0, 0, 0, 0.85)); }
+
+    .nav-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--text-dim);
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    footer strong { color: var(--primary); }
+
+    @media (max-width: 900px) {
+      .content { padding: 40px 28px; }
+      .analogy-box { flex-direction: column; text-align: center; }
+      .lesson-divider { margin: 40px 0 30px; }
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 15px; }
+      .content { padding: 30px 20px; }
+      .navigation-buttons { flex-direction: column; }
+      .nav-button { min-width: 100%; }
+    }
+
+    @media print {
+      body { background: white; color: #222; padding: 0; }
+      .container { background: white; border: none; box-shadow: none; }
+      .course-header,
+      .lesson-divider,
+      .analogy-box,
+      .tip-box,
+      .warning-box,
+      .interview-section,
+      .nav-button,
+      table {
+        background: white;
+        color: #000;
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+    }
+  </style>
 </head>
 <body>
     <div class="container">

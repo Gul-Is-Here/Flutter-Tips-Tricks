@@ -2,40 +2,57 @@
 
 ## ✅ Current Status
 
-**Completed:**
 - ✅ Course Index Page (`course-index.html`) - Beautiful landing page with all 8 modules
 - ✅ Module 1: Flutter Fundamentals (`course-module1.html`) - Complete with 3 lessons
-- ✅ Main index.html updated with prominent course banner
+- ✅ Main `index.html` updated with prominent course banner + day-by-day roadmap
+- ✅ Modules 2-8: UI/Layout → Deployment (`course-module2.html` … `course-module8.html`) now live with full analogies, labs, and interview sections
 
-**Live URL:** https://gul-is-here.github.io/Flutter-Tips-Tricks/course-index.html
+## 📋 Module Coverage Snapshots (2-8 ✅)
 
----
+Each module below is published and mirrors the planned outline. Use this section as a quick refresher of what lives inside each `course-module*.html` file.
 
-## 📋 Remaining Modules (2-8)
-
-### Module 2: UI & Layouts (Days 16-18)
+### Module 2: UI & Layouts (Days 16-18) — ✅ `course-module2.html`
 **Topics to Cover:**
 1. **Lesson 1: Layout Fundamentals**
    - Row, Column & Stack (with box analogy)
    - MainAxisAlignment vs CrossAxisAlignment
    - Expanded, Flexible, Spacer widgets
-   
-2. **Lesson 2: Scrollable Widgets**
-   - ListView (SingleChildScrollView, ListView.builder, ListView.separated)
-   - GridView (GridView.count, GridView.builder)
-   - PageView, CustomScrollView
-   
-3. **Lesson 3: Design Systems**
    - Material Design widgets (Card, AppBar, BottomNavigationBar)
-   - Cupertino widgets for iOS
    - Theme and styling
    - Custom widget composition
 
 **Child-Friendly Analogy:** "Building blocks and shelves" - Row/Column like arranging toys on shelves
 
 ---
+## 🎯 Next Steps
 
-### Module 3: State Management (Days 19-21)
+### Suggested polish items
+1. **Refresh automated tests** – rewrite `test/widget_test.dart` so it reflects the new comparison UI instead of the legacy counter sample.
+2. **Add more PDF exports** – convert the remaining HTML guides into markdown/PDF pairs for offline learners.
+3. **Collect learner feedback** – add a lightweight form or GitHub discussion link from `course-index.html` for future iterations.
+4. **Accessibility pass** – run Lighthouse or axe on the HTML pages to ensure contrast ratios meet WCAG targets.
+
+### Regression checklist before publishing updates
+- [x] All navigation buttons work (tested on desktop + mobile widths)
+- [x] Code blocks display correctly
+- [x] Mobile responsive design works
+- [x] No broken internal links
+- [x] Consistent styling with Module 1
+## 📊 Module Status:
+- ✅ Module 1: Flutter Fundamentals (DONE)
+- ✅ Module 2: UI & Layouts (DONE)
+- ✅ Module 3: State Management (DONE)
+- ✅ Module 4: Routing & Navigation (DONE)
+- ✅ Module 5: Advanced Concepts (DONE)
+- ✅ Module 6: Performance & Optimization (DONE)
+- ✅ Module 7: Testing (DONE)
+- ✅ Module 8: Deployment & Release (DONE)
+
+**Estimated Time Invested:** ~3-4 hours total (25 mins per module × 7 modules)
+
+---
+
+### Module 3: State Management (Days 19-21) — ✅ `course-module3.html`
 **Topics to Cover:**
 1. **Lesson 1: Basic State Management**
    - setState() deep dive
@@ -58,7 +75,7 @@
 
 ---
 
-### Module 4: Routing & Navigation (Day 22)
+### Module 4: Routing & Navigation (Day 22) — ✅ `course-module4.html`
 **Topics to Cover:**
 1. **Lesson 1: Basic Navigation**
    - Navigator.push, pop, pushReplacement (storybook analogy from Day 11-12)
@@ -80,7 +97,7 @@
 
 ---
 
-### Module 5: Advanced Concepts (Days 23-25)
+### Module 5: Advanced Concepts (Days 23-25) — ✅ `course-module5.html`
 **Topics to Cover:**
 1. **Lesson 1: App Lifecycle**
    - AppLifecycleState (from Day 11-12: resumed, inactive, paused, detached)
@@ -103,7 +120,7 @@
 
 ---
 
-### Module 6: Performance & Optimization (Days 26-27)
+### Module 6: Performance & Optimization (Days 26-27) — ✅ `course-module6.html`
 **Topics to Cover:**
 1. **Lesson 1: Widget Optimization**
    - const constructors importance
@@ -127,7 +144,7 @@
 
 ---
 
-### Module 7: Testing (Days 28-30)
+### Module 7: Testing (Days 28-30) — ✅ `course-module7.html`
 **Topics to Cover:**
 1. **Lesson 1: Unit Testing**
    - Writing unit tests for Dart functions
@@ -152,7 +169,7 @@
 
 ---
 
-### Module 8: Deployment & Release (Days 31-32)
+### Module 8: Deployment & Release (Days 31-32) — ✅ `course-module8.html`
 **Topics to Cover:**
 1. **Lesson 1: Build Configuration**
    - Build modes (debug, profile, release)

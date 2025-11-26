@@ -323,15 +323,17 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 22px;
+      padding: 12px 26px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(120deg, rgba(0, 255, 163, 0.2), rgba(0, 0, 0, 0.6));
+      border: 1px solid rgba(0, 255, 163, 0.4);
       color: var(--text);
       font-size: 0.95rem;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+      text-shadow: 0 0 12px rgba(0, 255, 163, 0.45);
     }
 
     .hero-actions {
@@ -363,7 +365,8 @@
     .secondary-cta {
       border: 1px solid rgba(0, 255, 163, 0.4);
       color: var(--text);
-      background: rgba(0, 255, 163, 0.08);
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 255, 163, 0.12));
+      box-shadow: inset 0 0 25px rgba(0, 255, 163, 0.08), 0 12px 25px rgba(0, 0, 0, 0.55);
     }
 
     .primary-cta:hover,
@@ -379,20 +382,21 @@
     }
 
     .highlight-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      padding: 24px;
+      background: linear-gradient(145deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 255, 163, 0.12) 100%);
+      border: 1px solid rgba(0, 255, 163, 0.18);
+      border-radius: 20px;
+      padding: 26px;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
     }
 
     .highlight-card::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top right, rgba(0, 255, 163, 0.25), transparent 60%);
-      opacity: 0.4;
+      background: radial-gradient(circle at top right, rgba(0, 255, 163, 0.25), transparent 70%);
+      opacity: 0.5;
     }
 
     .highlight-icon {
@@ -400,11 +404,12 @@
       margin-bottom: 12px;
       position: relative;
       z-index: 1;
+      color: var(--primary);
     }
 
     .highlight-card h3 {
-      margin-bottom: 8px;
-      font-size: 1.2rem;
+      margin-bottom: 10px;
+      font-size: 1.25rem;
       color: var(--text);
       position: relative;
       z-index: 1;
@@ -414,15 +419,20 @@
       position: relative;
       z-index: 1;
       margin: 0;
+      color: var(--text-dim);
+      line-height: 1.6;
     }
 
     .journey-section {
       max-width: 1100px;
       margin: 0 auto 70px;
-      padding: 32px;
-      border-radius: 24px;
-      background: var(--brand-soft);
-      border: 1px solid rgba(0, 255, 163, 0.25);
+      padding: 36px;
+      border-radius: 28px;
+      background: linear-gradient(140deg, rgba(0, 0, 0, 0.9), rgba(0, 255, 163, 0.14));
+      border: 1px solid rgba(0, 255, 163, 0.28);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
     }
 
     .journey-section h2 {
@@ -438,13 +448,73 @@
     }
 
     .journey-step {
-      padding: 18px;
-      border-radius: 16px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(0, 255, 163, 0.18);
+      padding: 22px;
+      border-radius: 20px;
+      background: linear-gradient(165deg, rgba(0, 0, 0, 0.85), rgba(0, 255, 163, 0.12));
+      border: 1px solid rgba(0, 255, 163, 0.25);
+      box-shadow: inset 0 0 35px rgba(0, 255, 163, 0.08), 0 15px 35px rgba(0, 0, 0, 0.45);
     }
 
     .journey-step strong { color: var(--primary); display: block; margin-bottom: 8px; }
+
+    .day-guides {
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+
+    .day-guides header {
+      padding: 0;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+
+    .day-guides h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .day-guides p { color: var(--text-dim); max-width: 720px; }
+
+    .day-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .day-card {
+      position: relative;
+      padding: 22px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 255, 163, 0.2);
+      background: linear-gradient(150deg, rgba(0, 0, 0, 0.85), rgba(0, 255, 163, 0.12));
+      box-shadow: inset 0 0 30px rgba(0, 255, 163, 0.08), 0 20px 45px rgba(0, 0, 0, 0.6);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .day-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 255, 163, 0.45);
+    }
+
+    .day-card strong {
+      display: block;
+      font-size: 1.05rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .day-card h3 {
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+      color: var(--text);
+    }
+
+    .day-card p { margin: 0; font-size: 0.95rem; color: var(--text-dim); }
     
     
     .stats-section {
@@ -457,13 +527,13 @@
     }
     
     .stat-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 15px;
-      padding: 25px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 255, 163, 0.12) 100%);
+      border: 1px solid rgba(0, 255, 163, 0.2);
+      border-radius: 20px;
+      padding: 28px;
       text-align: center;
       animation: fadeIn 1s ease 0.5s backwards;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
     }
     
     .stat-number {
@@ -478,7 +548,9 @@
     .stat-label {
       color: var(--text-dim);
       font-size: 1rem;
-      margin-top: 5px;
+      margin-top: 6px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
     
     .back-link {
@@ -490,27 +562,32 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      padding: 14px 30px;
-      background: rgba(0, 0, 0, 0.4);
+      padding: 14px 32px;
+      background: linear-gradient(135deg, rgba(0, 255, 163, 0.18), rgba(0, 0, 0, 0.8));
       color: var(--text);
-      border: 1px solid rgba(0, 255, 163, 0.35);
-      border-radius: 12px;
+      border: 1px solid rgba(0, 255, 163, 0.5);
+      border-radius: 14px;
       text-decoration: none;
       transition: all 0.3s;
       font-weight: 600;
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.55);
     }
     
     .back-button:hover {
-      background: rgba(0, 255, 163, 0.15);
+      background: linear-gradient(135deg, rgba(0, 255, 163, 0.3), rgba(0, 0, 0, 0.75));
       transform: translateY(-2px);
+      border-color: rgba(0, 255, 163, 0.7);
     }
     
     footer {
       text-align: center;
-      padding: 60px 24px 40px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 80px 24px 50px;
+      border-top: 1px solid rgba(0, 255, 163, 0.15);
       color: var(--text-dim);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      background: radial-gradient(circle at top, rgba(0, 255, 163, 0.08), transparent 60%),
+                  linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.85));
+      box-shadow: inset 0 40px 80px rgba(0, 0, 0, 0.65);
     }
     
     footer .accent { color: var(--primary); font-weight: 600; }
@@ -534,7 +611,7 @@
     html { scroll-behavior: smooth; }
   </style>
 </head>
-<body>
+<body id="top">
   <div class="content-wrapper">
     <header>
       <div class="hero-pill">New 2025 Edition • Interview Ready</div>
@@ -550,7 +627,7 @@
           <span>Start Learning Now</span>
           <span>→</span>
         </a>
-        <a class="secondary-cta" href="index.html">
+        <a class="secondary-cta" href="#day-guides">
           <span>Explore Day-by-day Guides</span>
         </a>
       </div>
@@ -591,6 +668,55 @@
         <h3>Interview Playbook</h3>
         <p>Curated Q&A sets at the end of each module help you rehearse before the big day.</p>
       </article>
+    </section>
+
+    <section class="day-guides" id="day-guides">
+      <header>
+        <h2>Day-by-day Deep Dives</h2>
+        <p>Each day tackles a single interview topic with analogy-rich explanations, visuals, and printable references.</p>
+      </header>
+      <div class="day-grid">
+        <a class="day-card" href="guides/day01-stateless-vs-stateful.html">
+          <strong>Day 01</strong>
+          <h3>Stateless vs Stateful</h3>
+          <p>See how rebuilds work with side-by-side widget behavior.</p>
+        </a>
+        <a class="day-card" href="guides/day02-const-vs-final.html">
+          <strong>Day 02</strong>
+          <h3>const vs final</h3>
+          <p>Memory, compile-time locks, and cheat-sheet style tables.</p>
+        </a>
+        <a class="day-card" href="guides/day03-build-context.html">
+          <strong>Day 03</strong>
+          <h3>BuildContext Magic</h3>
+          <p>Scope rules, widget trees, and the elevator analogy.</p>
+        </a>
+        <a class="day-card" href="guides/day04-hot-reload-vs-restart.html">
+          <strong>Day 04</strong>
+          <h3>Hot Reload vs Restart</h3>
+          <p>Tooling internals, when to use which, and demo GIFs.</p>
+        </a>
+        <a class="day-card" href="guides/day05-main-vs-cross-axis.html">
+          <strong>Day 05</strong>
+          <h3>Main vs Cross Axis</h3>
+          <p>Grid metaphors and layout diagnostics for interviews.</p>
+        </a>
+        <a class="day-card" href="future_vs_async(Day6).html">
+          <strong>Day 06</strong>
+          <h3>Future vs async/await</h3>
+          <p>Async flows, microtasks, and platform-friendly diagrams.</p>
+        </a>
+        <a class="day-card" href="Day7andDay8.html">
+          <strong>Day 07 & 08</strong>
+          <h3>Keys & InheritedWidget</h3>
+          <p>Cookie-basket analogy plus widget identity drills.</p>
+        </a>
+        <a class="day-card" href="day9andday10.html">
+          <strong>Day 09 & 10</strong>
+          <h3>Advanced Extras</h3>
+          <p>Performance traps, release prep, and printable cheats.</p>
+        </a>
+      </div>
     </section>
 
     <section class="journey-section">
@@ -821,7 +947,7 @@
       </section>
       
       <div class="back-link">
-        <a href="index.html" class="back-button">
+        <a href="#top" class="back-button">
           <span>←</span>
           <span>Back to Interview Tips</span>
         </a>

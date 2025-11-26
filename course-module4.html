@@ -5,70 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flutter Interview Course - Module 4: Routing & Navigation</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
     :root {
-      --primary: #00DE8E;
-      --purple: #7F5AF0;
-      --pink: #FF7AC6;
-      --dark: #0f172a;
-      --muted: #94a3b8;
-      --card: rgba(15, 23, 42, 0.85);
-      --border: rgba(255, 255, 255, 0.08);
+      --primary: #00FFA3;
+      --primary-dark: #02140f;
+      --accent: #00c67f;
+      --muted: #9ed7be;
+      --bg: #010807;
+      --card: rgba(3, 12, 10, 0.95);
+      --border: rgba(0, 255, 163, 0.25);
+      --text: #E8FFF5;
+      --text-dim: #9ed7be;
+      --shadow: 0 35px 90px rgba(0, 0, 0, 0.65);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at top, rgba(0, 222, 142, 0.15), transparent 45%),
-                  radial-gradient(circle at 20% 20%, rgba(127, 90, 240, 0.25), transparent 40%),
-                  #05070e;
-      color: #f1f5f9;
+      background: radial-gradient(circle at 20% 10%, rgba(0, 255, 163, 0.15), transparent 50%),
+                  radial-gradient(circle at 80% 0%, rgba(0, 255, 163, 0.08), transparent 45%),
+                  linear-gradient(135deg, #000000, #02110d 60%, #000000 100%);
+      color: var(--text);
       min-height: 100vh;
-      padding: 40px 16px;
+      padding: 40px 16px 70px;
     }
 
     .course-shell {
-      max-width: 1100px;
-      margin: 0 auto 60px;
-      border-radius: 32px;
-      background: rgba(2, 6, 23, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 40px 80px rgba(2, 6, 23, 0.6);
+      max-width: 1150px;
+      margin: 0 auto;
+      border-radius: 34px;
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: var(--shadow);
       overflow: hidden;
+      position: relative;
     }
 
     header {
-      padding: 60px 40px;
+      padding: 70px 45px;
       text-align: center;
-      background: radial-gradient(circle at top right, rgba(255, 122, 198, 0.4), transparent 40%),
-                  radial-gradient(circle at bottom left, rgba(0, 222, 142, 0.4), transparent 45%),
-                  #0b1120;
+      background: linear-gradient(120deg, rgba(0, 0, 0, 0.9), rgba(0, 255, 163, 0.18));
       position: relative;
     }
 
     header::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 70%);
-      mix-blend-mode: screen;
-      opacity: 0.5;
+      inset: 18px;
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      pointer-events: none;
+      opacity: 0.7;
     }
 
     header h1 {
-      font-size: clamp(2.5rem, 4vw, 3.5rem);
-      color: #fff;
-      margin-bottom: 16px;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      color: var(--text);
+      margin: 16px auto;
+      max-width: 800px;
     }
 
     header p {
-      color: var(--muted);
-      font-size: 1.1rem;
+      color: var(--text-dim);
+      font-size: 1.08rem;
       max-width: 760px;
-      margin: 0 auto 24px;
-      line-height: 1.8;
+      margin: 0 auto;
+      line-height: 1.85;
       position: relative;
       z-index: 1;
     }
@@ -76,189 +80,214 @@
     .module-pill {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 28px;
+      gap: 12px;
+      padding: 12px 30px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      font-weight: 600;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: var(--text);
       position: relative;
       z-index: 1;
     }
 
     .quick-stats {
-      margin-top: 30px;
+      margin-top: 32px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
+      gap: 18px;
       position: relative;
       z-index: 1;
     }
 
     .stat-card {
-      padding: 20px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.05);
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.45);
       border: 1px solid rgba(255, 255, 255, 0.08);
       text-align: center;
     }
 
     .stat-card span {
       display: block;
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: var(--primary);
+      margin-bottom: 6px;
     }
 
     .content {
-      padding: 60px 40px 40px;
+      padding: 58px 55px 45px;
       display: flex;
       flex-direction: column;
       gap: 50px;
     }
 
     .lesson-divider {
-      padding: 32px;
-      border-radius: 24px;
-      background: linear-gradient(115deg, rgba(0, 222, 142, 0.15), rgba(127, 90, 240, 0.15));
+      padding: 34px;
+      border-radius: 26px;
+      background: linear-gradient(125deg, rgba(0, 255, 163, 0.18), rgba(0, 0, 0, 0.7));
       border: 1px solid var(--border);
       position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    .lesson-divider::after {
+      content: '';
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      width: 60%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transform: translateX(-50%);
     }
 
     .lesson-divider h2 {
-      font-size: 2rem;
-      margin-bottom: 8px;
-      color: #fff;
+      font-size: clamp(1.8rem, 3vw, 2.2rem);
+      margin-bottom: 10px;
+      color: var(--text);
     }
 
     .lesson-divider span {
-      color: var(--muted);
-      font-size: 0.95rem;
+      color: var(--text-dim);
+      font-size: 0.98rem;
     }
 
     .analogy-box {
       margin-top: 24px;
-      padding: 24px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.05);
-      border-left: 4px solid var(--primary);
+      padding: 26px;
+      border-radius: 22px;
+      background: rgba(0, 0, 0, 0.55);
+      border-left: 6px solid #FDD835;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
-      gap: 16px;
-    }
-
-    .analogy-emoji {
-      font-size: 2rem;
-    }
-
-    .concept-grid {
-      margin-top: 24px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 20px;
     }
 
-    .concept-card {
-      padding: 24px;
-      border-radius: 20px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      min-height: 180px;
+    .analogy-emoji { font-size: 2.6rem; }
+
+    .concept-grid {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
     }
 
-    h3 { margin-bottom: 12px; font-size: 1.4rem; color: #fff; }
-    p { color: var(--muted); line-height: 1.8; }
+    .concept-card {
+      padding: 26px;
+      border-radius: 22px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      min-height: 190px;
+      box-shadow: inset 0 0 30px rgba(0, 255, 163, 0.08);
+    }
+
+    h3 { margin-bottom: 12px; font-size: 1.4rem; color: var(--text); }
+    p { color: var(--text-dim); line-height: 1.85; }
 
     .code-block {
-      background: #0f172a;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      border-radius: 16px;
-      padding: 24px;
-      font-family: 'Fira Code', 'Source Code Pro', monospace;
+      background: #03140f;
+      border: 1px solid rgba(0, 255, 163, 0.2);
+      border-radius: 20px;
+      padding: 26px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
       font-size: 0.95rem;
-      line-height: 1.6;
-      overflow-x: auto;
-      color: #e2e8f0;
+      line-height: 1.7;
+      color: var(--text);
       margin: 24px 0;
+      box-shadow: inset 0 0 35px rgba(0, 255, 163, 0.08);
     }
-
-    .code-comment { color: #94a3b8; }
-    .code-keyword { color: #7dd3fc; }
-    .code-string { color: #f9a8d4; }
-    .code-number { color: #facc15; }
 
     .comparison-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 30px 0;
-      border-radius: 18px;
+      margin: 34px 0;
+      border-radius: 22px;
       overflow: hidden;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
 
     .comparison-table th {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 16px;
+      background: linear-gradient(135deg, rgba(0, 255, 163, 0.25), rgba(0, 0, 0, 0.85));
+      padding: 18px;
       text-align: left;
-      font-size: 1rem;
+      color: var(--text);
+      letter-spacing: 0.05em;
     }
 
     .comparison-table td {
-      padding: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      color: var(--muted);
+      padding: 18px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-dim);
+      background: rgba(0, 0, 0, 0.4);
     }
 
+    tr:nth-child(even) td { background: rgba(0, 255, 163, 0.05); }
+
     .tip-card {
-      margin: 20px 0;
-      padding: 20px;
-      border-radius: 18px;
-      background: rgba(0, 222, 142, 0.1);
-      border: 1px solid rgba(0, 222, 142, 0.3);
-      color: #d1fae5;
+      margin: 24px 0;
+      padding: 22px;
+      border-radius: 20px;
+      background: linear-gradient(120deg, rgba(0, 0, 0, 0.8), rgba(0, 255, 163, 0.08));
+      border: 1px solid rgba(0, 255, 163, 0.25);
+      color: var(--text);
     }
 
     .interview-section {
-      padding: 30px;
-      border-radius: 24px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid var(--border);
-      margin-top: 30px;
+      padding: 34px;
+      border-radius: 26px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
 
-    .interview-section h3 {
-      font-size: 1.6rem;
-      margin-bottom: 20px;
-    }
-
-    .qa-item { margin-bottom: 18px; }
-    .question { color: var(--pink); font-weight: 600; }
+    .qa-item { margin-bottom: 22px; }
+    .question { color: var(--primary); font-weight: 700; }
 
     .navigation-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 18px;
       justify-content: center;
       margin-top: 40px;
     }
 
     .nav-button {
-      padding: 14px 26px;
+      padding: 16px 30px;
       border-radius: 999px;
-      background: linear-gradient(120deg, rgba(0, 222, 142, 0.2), rgba(127, 90, 240, 0.2));
-      color: #fff;
+      background: linear-gradient(130deg, rgba(0, 255, 163, 0.3), rgba(0, 0, 0, 0.85));
+      color: var(--text);
       text-decoration: none;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      font-weight: 600;
-      transition: transform 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      min-width: 230px;
+      text-align: center;
+      box-shadow: 0 25px 55px rgba(0, 0, 0, 0.55);
     }
 
-    .nav-button:hover { transform: translateY(-2px); }
+    .nav-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 35px 70px rgba(0, 0, 0, 0.6);
+    }
 
-    @media (max-width: 768px) {
-      header, .content { padding: 32px 20px; }
+    @media (max-width: 900px) {
+      header, .content { padding: 40px 26px; }
       .concept-grid { grid-template-columns: 1fr; }
+      .course-shell { border-radius: 24px; }
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 20px 10px 50px; }
+      .content { padding: 32px 20px; }
+      .navigation-buttons { flex-direction: column; }
+      .nav-button { width: 100%; }
     }
   </style>
 </head>
